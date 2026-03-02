@@ -22,23 +22,20 @@
 683:35  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
 
 ./src/components/features/admin/AdminSettingsForm.tsx
-296:20  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+296:35  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
 
 ./src/components/features/terminal/AIInteractiveTerminal.tsx
 187:15  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
 
 ./src/components/shared/ThemeSync.tsx
-6:22  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-
-./src/components/ui/CustomCursor.tsx
-16:9  Error: 'cursorRef' is assigned a value but never used.  @typescript-eslint/no-unused-vars
+6:37  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
 
 ./src/hooks/useAdminSettings.ts
-4:44  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-55:24  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-69:47  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-70:24  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-82:64  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-83:24  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+4:59  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+55:39  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+74:27  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+76:39  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+94:27  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+96:39  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
 
 info  - Need to disable some ESLint rules? Learn more here: https://nextjs.org/docs/app/api-reference/config/eslint#disabling-rules
