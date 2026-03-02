@@ -164,6 +164,17 @@ export function AdminSettingsForm({
             descriptionFont: "Inter",
           };
         }
+        // Initialize categories if missing
+        if (!data.pages.work.categories) {
+          data.pages.work.categories = [
+            "AI Image",
+            "AI Video",
+            "AI Code",
+            "Vibe Coding",
+            "AI Automation",
+            "Design",
+          ];
+        }
         setSettings(data);
       }
     } catch (error) {

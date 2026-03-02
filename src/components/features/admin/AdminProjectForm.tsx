@@ -54,8 +54,15 @@ export default function AdminProjectForm() {
     "detailed",
   );
   const [isUploading, setIsUploading] = useState<string | null>(null);
+  const [dynamicCategories, setDynamicCategories] = useState<string[]>([
+    "AI Image",
+    "AI Video",
+    "AI Code",
+    "Vibe Coding",
+    "AI Automation",
+    "Design",
+  ]);
 
-  // ... (Toast and Modal states stay same)
   const [toast, setToast] = useState<{
     isVisible: boolean;
     message: string;
@@ -84,6 +91,7 @@ export default function AdminProjectForm() {
 
   useEffect(() => {
     fetchProjects();
+    fetchCategories();
   }, []);
 
   const fetchProjects = async () => {
@@ -98,6 +106,18 @@ export default function AdminProjectForm() {
       console.error("Fetch error:", error);
     } finally {
       setIsLoading(false);
+    }
+  };
+
+  const fetchCategories = async () => {
+    try {
+      const res = await fetch("/api/admin/update?type=site-config");
+      const result = await res.json();
+      if (result.success && result.data.categories) {
+        setDynamicCategories(result.data.categories);
+      }
+    } catch (error) {
+      console.error("Fetch categories error:", error);
     }
   };
 
@@ -159,7 +179,7 @@ export default function AdminProjectForm() {
     const newProject: Project = {
       id: `project-${Date.now()}`,
       title: "New Project",
-      category: "AI Image",
+      category: dynamicCategories[0] || "AI Image",
       thumbnail: "/images/placeholder.jpg",
       description: "Project summary...",
       tags: ["AI"],
@@ -276,15 +296,6 @@ export default function AdminProjectForm() {
       setIsSaving(false);
     }
   };
-
-  const categories = [
-    "AI Image",
-    "AI Video",
-    "AI Code",
-    "Vibe Coding",
-    "AI Automation",
-    "Design",
-  ];
 
   const getButtonContent = () => {
     if (isSaving)
@@ -531,11 +542,10 @@ export default function AdminProjectForm() {
                 className="bg-white/5 border border-white/10 overflow-hidden shadow-xl"
               >
                 {/* Header for Accordion */}
-                <div
+                <button
+                  type="button"
                   className={`w-full flex items-center justify-between p-6 cursor-pointer transition-all duration-200 active:scale-[0.98] ${isExpanded ? "bg-white/5 border-b border-white/10" : "hover:bg-white/10"}`}
                   onClick={() => setExpandedId(isExpanded ? null : project.id)}
-                  role="button"
-                  tabIndex={0}
                   onKeyDown={(e) => {
                     if (e.key === "Enter" || e.key === " ") {
                       e.preventDefault();
@@ -590,7 +600,7 @@ export default function AdminProjectForm() {
                       <LayoutList size={16} className="text-white/20" />
                     </div>
                   </div>
-                </div>
+                </button>
 
                 {isExpanded && (
                   <div className="p-8 space-y-12 bg-black/40">
@@ -632,7 +642,7 @@ export default function AdminProjectForm() {
                               }
                               className="w-full bg-black/40 border border-white/10 px-4 py-3 text-sm focus:border-white outline-none"
                             >
-                              {categories.map((cat) => (
+                              {dynamicCategories.map((cat) => (
                                 <option key={cat} value={cat}>
                                   {cat}
                                 </option>

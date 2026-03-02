@@ -3,11 +3,19 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 
 import { useState, useEffect } from "react";
-import { Check, GripVertical, Trash2, Plus, RefreshCw } from "lucide-react";
+import {
+  Check,
+  GripVertical,
+  Trash2,
+  Plus,
+  RefreshCw,
+  Layers,
+} from "lucide-react";
 import { motion } from "framer-motion";
 import { ReactSortable } from "react-sortablejs";
 import AdminToast from "@/components/shared/admin/AdminToast";
 import { Button } from "@/components/ui/button";
+import { AdminCard } from "@/components/shared/admin/AdminSection";
 
 interface SiteConfig {
   siteName: string;
@@ -32,6 +40,7 @@ interface SiteConfig {
   metaDescription?: string;
   ogImage?: string;
   keywords?: string;
+  categories: string[];
 }
 
 interface VibePromptCardProps {
@@ -638,6 +647,91 @@ export default function AdminConfigForm() {
               />
             ))}
           </ReactSortable>
+        </div>
+
+        {/* Category Taxonomy Management */}
+        <div className="pt-10 space-y-6">
+          <div className="flex justify-between items-center border-b border-white/10 pb-4">
+            <div className="space-y-1">
+              <h3 className="text-[10px] font-black uppercase tracking-widest text-white/50 flex items-center gap-2">
+                <Layers size={12} />
+                Category Taxonomy
+              </h3>
+              <p className="text-[9px] text-white/20 uppercase tracking-widest">
+                Manage project classification labels
+              </p>
+            </div>
+            <Button
+              onClick={() => {
+                if (!config) return;
+                const currentCats = config.categories || [];
+                handleUpdate("categories", [
+                  ...currentCats,
+                  `New Category ${currentCats.length + 1}`,
+                ]);
+              }}
+              variant="outline"
+              className="text-[9px] font-black uppercase tracking-widest border-white/20 px-4 h-9 hover:bg-white hover:text-black hover:border-white transition-all flex items-center gap-2"
+            >
+              <Plus size={12} />+ Add New Category
+            </Button>
+          </div>
+
+          <ReactSortable
+            list={(config.categories || []).map((cat, i) => ({
+              id: `cat-${i}`,
+              name: cat,
+            }))}
+            setList={(newState) =>
+              handleUpdate(
+                "categories",
+                newState.map((item) => item.name),
+              )
+            }
+            className="grid grid-cols-1 md:grid-cols-2 gap-4"
+            animation={200}
+            handle=".drag-handle"
+          >
+            {(config.categories || []).map((category, index) => (
+              <AdminCard
+                key={`cat-v2-${category}-${index}`}
+                className="group py-3 px-4"
+              >
+                <div className="flex items-center gap-3">
+                  <GripVertical className="drag-handle w-3 h-3 text-white/10 group-hover:text-white/30 transition-colors cursor-grab" />
+                  <input
+                    type="text"
+                    value={category}
+                    onChange={(e) => {
+                      const newCats = [...(config.categories || [])];
+                      newCats[index] = e.target.value;
+                      handleUpdate("categories", newCats);
+                    }}
+                    className="flex-1 bg-transparent border-none text-[10px] font-black uppercase tracking-widest text-white/80 focus:text-white focus:outline-none"
+                  />
+                  <button
+                    onClick={() => {
+                      const newCats = (config.categories || []).filter(
+                        (_, i) => i !== index,
+                      );
+                      handleUpdate("categories", newCats);
+                    }}
+                    className="opacity-0 group-hover:opacity-100 p-1.5 hover:bg-white/5 text-white/20 hover:text-red-400 transition-all rounded-xs"
+                  >
+                    <Trash2 className="w-3 h-3" />
+                  </button>
+                </div>
+              </AdminCard>
+            ))}
+          </ReactSortable>
+
+          {(config.categories || []).length === 0 && (
+            <div className="py-12 border border-dashed border-white/10 flex flex-col items-center justify-center gap-3 rounded-sm">
+              <p className="text-[10px] font-black uppercase tracking-[0.2em] text-white/20">
+                No active categories
+              </p>
+            </div>
+          )}
         </div>
 
         {/* Vibe Prompts */}

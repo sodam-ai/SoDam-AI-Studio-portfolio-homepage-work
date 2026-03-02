@@ -47,7 +47,15 @@
       "cardSize": "medium",
       "cardGap": 32,
       "gridColumns": 2,
-      "showCategories": true
+      "showCategories": true,
+      "categories": [
+        "AI Image",
+        "AI Video",
+        "AI Code",
+        "Vibe Coding",
+        "AI Automation",
+        "Design"
+      ]
     },
     "about": {
       "title": "ABOUT",
