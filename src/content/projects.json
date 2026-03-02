@@ -1,0 +1,124 @@
+[
+  {
+    "id": "project-1772346029659",
+    "title": "video",
+    "category": "AI Image",
+    "thumbnail": "/images/projects/1772346046774-1.png",
+    "description": "Project summary...",
+    "tags": [
+      "AI"
+    ],
+    "featured": false,
+    "fullDescription": "",
+    "approach": "",
+    "challenges": [],
+    "images": [],
+    "aspectRatio": "auto",
+    "techWalkthrough": {
+      "title": "Technical Process",
+      "description": "",
+      "steps": []
+    },
+    "videoUrl": "https://www.youtube.com/watch?v=c7_ANA1NiS0"
+  },
+  {
+    "id": "ai-visual-art",
+    "title": "Abstract Realism V2",
+    "category": "AI Image Synthesis",
+    "aspectRatio": "auto",
+    "featured": true,
+    "thumbnail": "/images/projects/abstract-realism.jpg",
+    "description": "Midjourney v6와 Stable Diffusion 실사 화풍 정밀 큐레이션.",
+    "fullDescription": "이 프로젝트는 AI 이미지 생성이 단순한 생성을 넘어, 작가의 의도를 정교하게 반영하는 'Artistic Direction'의 가능성을 탐구합니다. 최신 AI 모델인 Midjourney v6와 Flux.1 Pro를 활용하여 기존 디지털 아트의 경계를 허물었습니다.",
+    "tags": [
+      "Midjourney v6",
+      "Flux.1 Pro",
+      "Stable Diffusion",
+      "In-painting"
+    ],
+    "challenges": [
+      "인물과 배경의 완벽한 텍스처 매칭 (Coherence)",
+      "특정 스타일 유지를 위한 커스텀 LoRA 학습",
+      "고해상도 업스케일링 시 세부 질감 유지"
+    ],
+    "approach": "수백 번의 프롬프트 엔지니어링과 마스킹 작업을 통해, AI 특유의 파편화를 제거하고 실제 작품과 같은 밀도를 구현했습니다.",
+    "images": [],
+    "prompt": "Cinematic cyberpunk portrait with oil painting texture, ultra-realistic skin, volumetric lighting, B&W high contrast.",
+    "techWalkthrough": {
+      "title": "Aesthetic Synthesis Pipeline",
+      "description": "단일 프롬프트를 넘어선 다단계 합성 공정을 통해 아트워크의 완성도를 높였습니다.",
+      "steps": [
+        "Base generation via Flux.1 Pro for spatial accuracy",
+        "Texture refinement via Midjourney 'Style Reference'",
+        "selective in-painting for anatomical correction"
+      ]
+    }
+  },
+  {
+    "id": "cinematic-ai-motion",
+    "title": "Neo-Tokyo 2088",
+    "category": "AI Video Production",
+    "aspectRatio": "16/9",
+    "featured": true,
+    "thumbnail": "https://images.unsplash.com/photo-1519608487953-e999c86e7455?q=80&w=2670&auto=format&fit=crop",
+    "description": "Runway Gen-3 Alpha & Kling AI를 활용한 고효율 영상 제작.",
+    "fullDescription": "전통적인 CGI 제작 방식에서 벗어나 AI 영상 엔진으로 시네마틱 세계관을 구축했습니다. Temporal Consistency(시간적 일관성)를 유지하며 영화적 조명과 카메라 다이나믹스를 완벽하게 통제했습니다.",
+    "tags": [
+      "Runway Gen-3 Alpha",
+      "Kling AI",
+      "Topaz Video AI",
+      "Sound Synthesis"
+    ],
+    "challenges": [
+      "물리 법칙을 무시하는 프레임 간 굴곡(Morphing) 제어",
+      "복잡한 카메라 패닝 중 객체 고유 형태 유지",
+      "AI 특유의 노이즈 제거 및 4K 업스케일링"
+    ],
+    "approach": "Motion Brush와 Camera Control 파라미터를 정밀 조정하고, ElevenLabs 및 Udio를 활용한 AI 사운드 디자인을 결합하여 완결성 있는 영상물을 완성했습니다.",
+    "videoUrl": "",
+    "techWalkthrough": {
+      "title": "AI Cinematography",
+      "description": "Image-to-Video(I2V) 기법을 활용하여 정지된 컨셉 아트에 생명력을 불어넣었습니다.",
+      "steps": [
+        "Keyframe Orchestration in Midjourney",
+        "Motion Synthesis in Runway Gen-3 Alpha",
+        "Neural Sound Layering & Final Polish"
+      ]
+    },
+    "images": []
+  },
+  {
+    "id": "vibe-portfolio",
+    "title": "Personal Portfolio",
+    "category": "Vibe Coding / Dev",
+    "aspectRatio": "auto",
+    "featured": true,
+    "thumbnail": "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=2670&auto=format&fit=crop",
+    "description": "AI 에이전트 오케스트레이션으로 구축된 차세대 웹 인터페이스.",
+    "fullDescription": "디자인부터 배포까지 전 과정을 AI와 협업하는 '바이브 코딩'의 정수를 담았습니다. Tailwind CSS v4의 성능과 Next.js 15의 최신 기능, 그리고 Framer Motion의 고난도 애니메이션을 통해 프리미엄 UX를 제안합니다.",
+    "tags": [
+      "Next.js 15",
+      "Tailwind v4",
+      "Framer Motion",
+      "Agentic Dev"
+    ],
+    "challenges": [
+      "Tailwind v4 베타 버전의 디자인 토큰 정합성 확보",
+      "에이전트 간의 명령 전달 오류 최소화 (Context Management)",
+      "복잡한 인터랙티브 그래디언트의 렌더링 최적화"
+    ],
+    "approach": "전통적인 코딩 방식을 넘어, 자연어 지시를 통해 디자인 시스템을 유기적으로 구축하고 수천 라인의 코드를 AI 에이전트와 함께 조율했습니다.",
+    "githubUrl": "",
+    "liveUrl": "",
+    "techWalkthrough": {
+      "title": "The Agentic Stack",
+      "description": "Antigravity, Claude, Codex 등 다양한 LLM 에이전트를 조율하는 효율적인 개발 워크플로우를 구축했습니다.",
+      "steps": [
+        "Natural Language Architecture Design",
+        "Agentic Component Orchestration",
+        "Automated Verification & Aesthetic Polish"
+      ]
+    },
+    "images": []
+  }
+]

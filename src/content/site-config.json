@@ -1,0 +1,34 @@
+{
+  "siteName": "SoDam AI Studio",
+  "name": "SoDam",
+  "role": "AI Creative Studio",
+  "bio": "AI 기술력과 예술적 감각을 결합하여, 기업의 가치를 극대화하는 프리미엄 디지털 솔루션을 제공합니다.",
+  "slogan": "Premium AI Design & Interaction Studio",
+  "description": "사용자 경험(UX)과 최신 AI 기술을 결합하여 비즈니스의 가치를 극대화하는 프리미먼 디자인 솔루션을 제공합니다.",
+  "connectors": [
+    {
+      "id": "conn-1",
+      "label": "GitHub",
+      "url": "https://github.com/sodam-ai-studio"
+    },
+    { "id": "conn-2", "label": "Email", "url": "hello@sodamaistudio.com" }
+  ],
+  "vibePrompts": [
+    {
+      "input": "Synthesize a neural landscape with cinematic lighting.",
+      "output": "// Neural Graphics Engine Initialized...\n[Model: Flux.1 Pro]\n[Mode: Abstract Aesthetics]\n// Rendering aesthetic coherence..."
+    },
+    {
+      "input": "Orchestrate a 4s motion sequence of digital consciousness.",
+      "output": "// Kinetic Engine Active...\n[Processor: Kling AI]\n[Temporal: Seamless Flow]\n// Aesthetic Integrity Verified."
+    },
+    {
+      "input": "Develop a high-fidelity interactive portal via Vibe Coding.",
+      "output": "export const Aesthetics = () => {\n  return <motion.section className='neural-core' />\n};"
+    }
+  ],
+  "metaTitle": "",
+  "metaDescription": "",
+  "ogImage": "",
+  "keywords": ""
+}

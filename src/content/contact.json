@@ -1,0 +1,34 @@
+{
+  "headline": "Let's Create Together",
+  "description": "새로운 프로젝트, 협업 제안, 또는 단순한 인사까지 — 언제든 연락주세요.",
+  "channels": [
+    {
+      "type": "email",
+      "label": "이메일",
+      "value": "hello@antigravity.ai",
+      "icon": "Mail",
+      "action": "mailto:hello@antigravity.ai"
+    },
+    {
+      "type": "kakao",
+      "label": "카카오톡",
+      "value": "오픈채팅 바로가기",
+      "icon": "MessageCircle",
+      "action": "https://open.kakao.com/"
+    },
+    {
+      "type": "instagram",
+      "label": "인스타그램",
+      "value": "@antigravity",
+      "icon": "Instagram",
+      "action": "https://instagram.com/"
+    },
+    {
+      "type": "phone",
+      "label": "전화",
+      "value": "010-0000-0000",
+      "icon": "Phone",
+      "action": "tel:010-0000-0000"
+    }
+  ]
+}

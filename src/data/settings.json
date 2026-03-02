@@ -1,0 +1,87 @@
+{
+  "appearance": {
+    "theme": "black",
+    "fontSizes": {
+      "heroTitle": 248,
+      "heroSubtitle": 36,
+      "philosophyTitle": 1793,
+      "philosophyDesc": 764,
+      "sectionTitle": 52,
+      "sectionDescription": 32,
+      "aboutTitle": 346,
+      "aboutBody": 92,
+      "projectTitle": 315,
+      "projectCategory": 82,
+      "projectDescription": 16,
+      "cardTitle": 20,
+      "cardCategory": 20,
+      "bodyText": 13,
+      "navigation": 15,
+      "footerText": 12
+    },
+    "mobileFontSizes": {
+      "heroTitle": 48,
+      "heroSubtitle": 14,
+      "philosophyTitle": 36,
+      "philosophyDesc": 18,
+      "sectionTitle": 32,
+      "sectionDescription": 20,
+      "aboutTitle": 32,
+      "aboutBody": 16,
+      "projectTitle": 28,
+      "projectCategory": 14,
+      "projectDescription": 14,
+      "cardTitle": 18,
+      "cardCategory": 16,
+      "bodyText": 13,
+      "navigation": 14,
+      "footerText": 10
+    },
+    "layout": {
+      "sectionGap": 200,
+      "containerMaxWidth": 1440,
+      "contentMaxWidth": 800,
+      "useFixedLayout": true,
+      "textAlign": "center",
+      "projectLayoutMode": "grid",
+      "showPhilosophy": true,
+      "letterSpacing": -0.02,
+      "lineHeight": 1.6
+    },
+    "fonts": {
+      "fontFamily": "Inter",
+      "weight": 400
+    }
+  },
+  "landing": {
+    "hero": {
+      "title": "AI IS THE NEW CREATIVE SYNTAX.",
+      "subtitle": "단순한 도구를 넘어, AI와 함께 이미지, 영상, 코드를 조각하고 다듬습니다. 바이브 코딩은 상상을 현실로 전환하는 가장 빠른 인터페이스입니다.",
+      "showTerminal": true
+    },
+    "philosophy": {
+      "title": "AI IS THE NEW CREATIVE SYNTAX",
+      "description": "단순한 도구를 넘어, AI와 함께 이미지, 영상, 코드를 조각하고 다듬습니다.\n바이브 코딩은 상상을 현실로 전환하는 가장 빠른 인터페이스입니다."
+    },
+    "sections": [
+      {
+        "id": "showcase",
+        "title": "Selected Works Showcase",
+        "visible": true,
+        "order": 1
+      },
+      {
+        "id": "vibe",
+        "title": "AI CREATIVE STUDIO PREMIUM AI DESIGN & INTERACTION",
+        "visible": true,
+        "order": 2
+      },
+      {
+        "id": "about",
+        "title": "The Creator",
+        "visible": true,
+        "order": 3
+      }
+    ]
+  }
+}
