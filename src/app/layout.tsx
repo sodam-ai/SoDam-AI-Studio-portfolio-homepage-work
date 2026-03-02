@@ -77,40 +77,90 @@ export default async function RootLayout({
   const theme = settings?.appearance?.theme || "black";
   const themeClass = theme === "black" ? "" : `theme-${theme}`;
 
+  const appearance = settings?.appearance || {};
+  const fontSizes = appearance.fontSizes || {};
+  const mobileFontSizes = appearance.mobileFontSizes || {};
+  const layout = appearance.layout || {};
+  const fonts = appearance.fonts || {};
+
   const fontVars = {
     // Desktop
-    "--font-heroTitle": `${settings?.appearance?.fontSizes?.heroTitle}px`,
-    "--font-heroSubtitle": `${settings?.appearance?.fontSizes?.heroSubtitle}px`,
-    "--font-philosophyTitle": `${settings?.appearance?.fontSizes?.philosophyTitle}px`,
-    "--font-philosophyDesc": `${settings?.appearance?.fontSizes?.philosophyDesc}px`,
-    "--font-sectionTitle": `${settings?.appearance?.fontSizes?.sectionTitle}px`,
-    "--font-sectionDescription": `${settings?.appearance?.fontSizes?.sectionDescription}px`,
-    "--font-cardTitle": `${settings?.appearance?.fontSizes?.cardTitle}px`,
-    "--font-cardCategory": `${settings?.appearance?.fontSizes?.cardCategory}px`,
-    "--font-bodyText": `${settings?.appearance?.fontSizes?.bodyText}px`,
-    "--font-navigation": `${settings?.appearance?.fontSizes?.navigation}px`,
+    "--font-heroTitle": fontSizes.heroTitle
+      ? `${fontSizes.heroTitle}px`
+      : undefined,
+    "--font-heroSubtitle": fontSizes.heroSubtitle
+      ? `${fontSizes.heroSubtitle}px`
+      : undefined,
+    "--font-philosophyTitle": fontSizes.philosophyTitle
+      ? `${fontSizes.philosophyTitle}px`
+      : undefined,
+    "--font-philosophyDesc": fontSizes.philosophyDesc
+      ? `${fontSizes.philosophyDesc}px`
+      : undefined,
+    "--font-sectionTitle": fontSizes.sectionTitle
+      ? `${fontSizes.sectionTitle}px`
+      : undefined,
+    "--font-sectionDescription": fontSizes.sectionDescription
+      ? `${fontSizes.sectionDescription}px`
+      : undefined,
+    "--font-cardTitle": fontSizes.cardTitle
+      ? `${fontSizes.cardTitle}px`
+      : undefined,
+    "--font-cardCategory": fontSizes.cardCategory
+      ? `${fontSizes.cardCategory}px`
+      : undefined,
+    "--font-bodyText": fontSizes.bodyText
+      ? `${fontSizes.bodyText}px`
+      : undefined,
+    "--font-navigation": fontSizes.navigation
+      ? `${fontSizes.navigation}px`
+      : undefined,
     // Mobile
-    "--m-font-heroTitle": `${settings?.appearance?.mobileFontSizes?.heroTitle}px`,
-    "--m-font-heroSubtitle": `${settings?.appearance?.mobileFontSizes?.heroSubtitle}px`,
-    "--m-font-philosophyTitle": `${settings?.appearance?.mobileFontSizes?.philosophyTitle}px`,
-    "--m-font-philosophyDesc": `${settings?.appearance?.mobileFontSizes?.philosophyDesc}px`,
-    "--m-font-sectionTitle": `${settings?.appearance?.mobileFontSizes?.sectionTitle}px`,
-    "--m-font-sectionDescription": `${settings?.appearance?.mobileFontSizes?.sectionDescription}px`,
-    "--m-font-cardTitle": `${settings?.appearance?.mobileFontSizes?.cardTitle}px`,
-    "--m-font-cardCategory": `${settings?.appearance?.mobileFontSizes?.cardCategory}px`,
-    "--m-font-bodyText": `${settings?.appearance?.mobileFontSizes?.bodyText}px`,
-    "--m-font-navigation": `${settings?.appearance?.mobileFontSizes?.navigation}px`,
+    "--m-font-heroTitle": mobileFontSizes.heroTitle
+      ? `${mobileFontSizes.heroTitle}px`
+      : undefined,
+    "--m-font-heroSubtitle": mobileFontSizes.heroSubtitle
+      ? `${mobileFontSizes.heroSubtitle}px`
+      : undefined,
+    "--m-font-philosophyTitle": mobileFontSizes.philosophyTitle
+      ? `${mobileFontSizes.philosophyTitle}px`
+      : undefined,
+    "--m-font-philosophyDesc": mobileFontSizes.philosophyDesc
+      ? `${mobileFontSizes.philosophyDesc}px`
+      : undefined,
+    "--m-font-sectionTitle": mobileFontSizes.sectionTitle
+      ? `${mobileFontSizes.sectionTitle}px`
+      : undefined,
+    "--m-font-sectionDescription": mobileFontSizes.sectionDescription
+      ? `${mobileFontSizes.sectionDescription}px`
+      : undefined,
+    "--m-font-cardTitle": mobileFontSizes.cardTitle
+      ? `${mobileFontSizes.cardTitle}px`
+      : undefined,
+    "--m-font-cardCategory": mobileFontSizes.cardCategory
+      ? `${mobileFontSizes.cardCategory}px`
+      : undefined,
+    "--m-font-bodyText": mobileFontSizes.bodyText
+      ? `${mobileFontSizes.bodyText}px`
+      : undefined,
+    "--m-font-navigation": mobileFontSizes.navigation
+      ? `${mobileFontSizes.navigation}px`
+      : undefined,
     // Layout
-    "--section-gap": `${settings?.appearance?.layout?.sectionGap}px`,
-    "--container-max-width": `${settings?.appearance?.layout?.containerMaxWidth}px`,
-    "--content-max-width": `${settings?.appearance?.layout?.contentMaxWidth}px`,
-    "--text-align": settings?.appearance?.layout?.textAlign || "center",
-    "--letter-spacing": `${settings?.appearance?.layout?.letterSpacing || -0.02}em`,
-    "--line-height": settings?.appearance?.layout?.lineHeight || 1.6,
+    "--section-gap": layout.sectionGap ? `${layout.sectionGap}px` : undefined,
+    "--container-max-width": layout.containerMaxWidth
+      ? `${layout.containerMaxWidth}px`
+      : undefined,
+    "--content-max-width": layout.contentMaxWidth
+      ? `${layout.contentMaxWidth}px`
+      : undefined,
+    "--text-align": layout.textAlign || "center",
+    "--letter-spacing": layout.letterSpacing
+      ? `${layout.letterSpacing}em`
+      : "-0.02em",
+    "--line-height": layout.lineHeight || 1.6,
     "--font-primary":
-      settings?.appearance?.fonts?.fontFamily === "Outfit"
-        ? "var(--font-outfit)"
-        : settings?.appearance?.fonts?.fontFamily,
+      fonts.fontFamily === "Outfit" ? "var(--font-outfit)" : fonts.fontFamily,
   } as React.CSSProperties;
 
   return (

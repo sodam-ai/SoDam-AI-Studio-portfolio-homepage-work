@@ -1,7 +1,7 @@
 {
   "appearance": {
     "fontSizes": {
-      "heroTitle": 79,
+      "heroTitle": 70,
       "heroSubtitle": 20,
       "sectionTitle": 60,
       "bodyText": 16,
@@ -19,7 +19,7 @@
     },
     "fonts": {
       "fontFamily": "Inter",
-      "headingFont": "Inter",
+      "headingFont": "Syne",
       "titleFont": "Inter",
       "descriptionFont": "Inter"
     }

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 
@@ -11,10 +11,18 @@ import { AdminSettingsForm } from "@/components/features/admin/AdminSettingsForm
 
 export default function AdminPage() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isAuthChecked, setIsAuthChecked] = useState(false);
   const [password, setPassword] = useState("");
   const [activeTab, setActiveTab] = useState<
     "projects" | "about" | "config" | "settings"
   >("projects");
+
+  useEffect(() => {
+    if (sessionStorage.getItem("admin_auth") === "true") {
+      setIsAuthenticated(true);
+    }
+    setIsAuthChecked(true);
+  }, []);
 
   const handleSaveComplete = () => {
     // Optional global save completion handler
@@ -30,6 +38,7 @@ export default function AdminPage() {
       });
       const result = await res.json();
       if (result.success) {
+        sessionStorage.setItem("admin_auth", "true");
         setIsAuthenticated(true);
       } else {
         alert(result.error || "비밀번호가 틀렸습니다.");
@@ -39,6 +48,14 @@ export default function AdminPage() {
       alert("로그인 중 오류가 발생했습니다.");
     }
   };
+
+  if (!isAuthChecked) {
+    return (
+      <main className="min-h-screen bg-black flex items-center justify-center">
+        {/* Simple loader or blank while checking auth */}
+      </main>
+    );
+  }
 
   if (!isAuthenticated) {
     return (
@@ -158,6 +175,7 @@ export default function AdminPage() {
 
         <Link
           href="/"
+          onClick={() => sessionStorage.removeItem("admin_auth")}
           className="text-[8px] uppercase tracking-widest text-white/20 hover:text-white transition-colors"
         >
           Exit Admin
