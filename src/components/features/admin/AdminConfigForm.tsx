@@ -64,7 +64,7 @@ function VibePromptCard({
       <div className="flex-1 space-y-6">
         <button
           onClick={() => onRemove(index)}
-          className="absolute top-4 right-4 text-[9px] font-black uppercase tracking-widest text-red-500/40 hover:text-red-500 transition-colors opacity-0 group-hover:opacity-100 flex items-center gap-1.5"
+          className="absolute top-4 right-4 text-[9px] font-black uppercase tracking-widest text-red-500/40 hover:text-red-500 transition-all duration-200 active:scale-[0.98] opacity-0 group-hover:opacity-100 flex items-center gap-1.5"
         >
           <Trash2 size={12} />
           Remove
@@ -136,7 +136,7 @@ function ConnectorCard({
       <div className="flex-1 space-y-6">
         <button
           onClick={() => onRemove(index)}
-          className="absolute top-4 right-4 text-[9px] font-black uppercase tracking-widest text-red-500/40 hover:text-red-500 transition-colors opacity-0 group-hover:opacity-100 flex items-center gap-1.5"
+          className="absolute top-4 right-4 text-[9px] font-black uppercase tracking-widest text-red-500/40 hover:text-red-500 transition-all duration-200 active:scale-[0.98] opacity-0 group-hover:opacity-100 flex items-center gap-1.5"
         >
           <Trash2 size={12} />
           Remove
@@ -293,12 +293,6 @@ export default function AdminConfigForm() {
     if (isSaved) setIsSaved(false);
   };
 
-  const handleReorderConnectors = (reordered: SiteConfig["connectors"]) => {
-    if (!config) return;
-    setConfig({ ...config, connectors: reordered });
-    if (isSaved) setIsSaved(false);
-  };
-
   const handlePromptUpdate = (
     index: number,
     field: "input" | "output",
@@ -329,14 +323,6 @@ export default function AdminConfigForm() {
     if (!config) return;
     const updatedPrompts = config.vibePrompts.filter((_, i) => i !== index);
     setConfig({ ...config, vibePrompts: updatedPrompts });
-    if (isSaved) setIsSaved(false);
-  };
-
-  const handleReorderPrompts = (
-    reorderedPrompts: SiteConfig["vibePrompts"],
-  ) => {
-    if (!config) return;
-    setConfig({ ...config, vibePrompts: reorderedPrompts });
     if (isSaved) setIsSaved(false);
   };
 
@@ -637,9 +623,7 @@ export default function AdminConfigForm() {
 
           <ReactSortable
             list={config.connectors || []}
-            setList={(newState) =>
-              handleUpdate("connectors", newState as SiteConfig["connectors"])
-            }
+            setList={(newState) => handleUpdate("connectors", newState)}
             className="space-y-4"
             animation={200}
             handle=".drag-handle"
@@ -674,9 +658,7 @@ export default function AdminConfigForm() {
 
           <ReactSortable
             list={config.vibePrompts || []}
-            setList={(newState) =>
-              handleUpdate("vibePrompts", newState as SiteConfig["vibePrompts"])
-            }
+            setList={(newState) => handleUpdate("vibePrompts", newState)}
             className="space-y-4"
             animation={200}
             handle=".drag-handle"

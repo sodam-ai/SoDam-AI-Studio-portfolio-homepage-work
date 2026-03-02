@@ -11,20 +11,27 @@
       "label": "GitHub",
       "url": "https://github.com/sodam-ai-studio"
     },
-    { "id": "conn-2", "label": "Email", "url": "hello@sodamaistudio.com" }
+    {
+      "id": "conn-2",
+      "label": "Email",
+      "url": "hello@sodamaistudio.com"
+    }
   ],
   "vibePrompts": [
     {
       "input": "Synthesize a neural landscape with cinematic lighting.",
-      "output": "// Neural Graphics Engine Initialized...\n[Model: Flux.1 Pro]\n[Mode: Abstract Aesthetics]\n// Rendering aesthetic coherence..."
+      "output": "// Neural Graphics Engine Initialized...\n[Model: Flux.1 Pro]\n[Mode: Abstract Aesthetics]\n// Rendering aesthetic coherence...",
+      "id": "prompt-1772463940385-0.15532926616130982"
     },
     {
       "input": "Orchestrate a 4s motion sequence of digital consciousness.",
-      "output": "// Kinetic Engine Active...\n[Processor: Kling AI]\n[Temporal: Seamless Flow]\n// Aesthetic Integrity Verified."
+      "output": "// Kinetic Engine Active...\n[Processor: Kling AI]\n[Temporal: Seamless Flow]\n// Aesthetic Integrity Verified.",
+      "id": "prompt-1772463940385-0.9637949238682649"
     },
     {
       "input": "Develop a high-fidelity interactive portal via Vibe Coding.",
-      "output": "export const Aesthetics = () => {\n  return <motion.section className='neural-core' />\n};"
+      "output": "export const Aesthetics = () => {\n  return <motion.section className='neural-core' />\n};",
+      "id": "prompt-1772463940385-0.534112724336909"
     }
   ],
   "metaTitle": "",

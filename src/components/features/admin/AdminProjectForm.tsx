@@ -370,21 +370,21 @@ export default function AdminProjectForm() {
             <div className="flex bg-black/40 border border-white/10 p-1 rounded-sm">
               <button
                 onClick={() => setViewMode("detailed")}
-                className={`p-2 transition-all cursor-pointer ${viewMode === "detailed" ? "bg-white/10 text-white" : "text-white/20 hover:text-white/60"}`}
+                className={`p-2 transition-all duration-200 active:scale-[0.98] cursor-pointer ${viewMode === "detailed" ? "bg-white/10 text-white" : "text-white/20 hover:text-white/60"}`}
                 title="Detailed View"
               >
                 <LayoutList size={14} />
               </button>
               <button
                 onClick={() => setViewMode("compact")}
-                className={`p-2 transition-all cursor-pointer ${viewMode === "compact" ? "bg-white/10 text-white" : "text-white/20 hover:text-white/60"}`}
+                className={`p-2 transition-all duration-200 active:scale-[0.98] cursor-pointer ${viewMode === "compact" ? "bg-white/10 text-white" : "text-white/20 hover:text-white/60"}`}
                 title="Compact View"
               >
                 <List size={14} />
               </button>
               <button
                 onClick={() => setViewMode("grid")}
-                className={`p-2 transition-all cursor-pointer ${viewMode === "grid" ? "bg-white/10 text-white" : "text-white/20 hover:text-white/60"}`}
+                className={`p-2 transition-all duration-200 active:scale-[0.98] cursor-pointer ${viewMode === "grid" ? "bg-white/10 text-white" : "text-white/20 hover:text-white/60"}`}
                 title="Grid View"
               >
                 <Grid size={14} />
@@ -427,7 +427,7 @@ export default function AdminProjectForm() {
                 >
                   <button
                     type="button"
-                    className="w-full h-full text-left block"
+                    className="w-full h-full text-left block transition-all duration-200 active:scale-[0.98]"
                     onClick={() => {
                       setViewMode("detailed");
                       setExpandedId(project.id);
@@ -476,7 +476,7 @@ export default function AdminProjectForm() {
                     </div>
                     <button
                       type="button"
-                      className="flex items-center gap-4 flex-1 text-left"
+                      className="flex items-center gap-4 flex-1 text-left transition-all duration-200 active:scale-[0.98]"
                       onClick={() => {
                         setViewMode("detailed");
                         setExpandedId(project.id);
@@ -532,8 +532,16 @@ export default function AdminProjectForm() {
               >
                 {/* Header for Accordion */}
                 <div
-                  className={`flex items-center justify-between p-6 cursor-pointer transition-colors ${isExpanded ? "bg-white/5 border-b border-white/10" : "hover:bg-white/10"}`}
+                  className={`w-full flex items-center justify-between p-6 cursor-pointer transition-all duration-200 active:scale-[0.98] ${isExpanded ? "bg-white/5 border-b border-white/10" : "hover:bg-white/10"}`}
                   onClick={() => setExpandedId(isExpanded ? null : project.id)}
+                  role="button"
+                  tabIndex={0}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter" || e.key === " ") {
+                      e.preventDefault();
+                      setExpandedId(isExpanded ? null : project.id);
+                    }
+                  }}
                 >
                   <div className="flex items-center gap-6">
                     <div className="drag-handle p-2 text-white/20 group-hover:text-white/50 transition-colors cursor-grab active:cursor-grabbing border border-white/5">
@@ -1048,7 +1056,7 @@ export default function AdminProjectForm() {
                             />
                             <label
                               htmlFor={`gallery-file-${project.id}`}
-                              className={`flex items-center gap-2 px-3 py-1.5 border border-white/10 bg-white/5 hover:bg-white/10 cursor-pointer transition-all text-[8px] uppercase font-black tracking-widest ${
+                              className={`flex items-center gap-2 px-3 py-1.5 border border-white/10 bg-white/5 hover:bg-white/10 cursor-pointer transition-all duration-200 active:scale-[0.98] text-[8px] uppercase font-black tracking-widest ${
                                 isUploading === "gallery-" + project.id
                                   ? "opacity-50 cursor-wait"
                                   : ""

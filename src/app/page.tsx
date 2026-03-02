@@ -88,12 +88,25 @@ export default async function HomePage() {
   const { appearance, landing } = settings;
   const { fontSizes, mobileFontSizes, layout } = appearance;
 
+  // 디자인 시스템 변수 브릿지 생셩
+  const designVariables = {
+    "--section-gap": `${layout.sectionGap}px`,
+    "--font-heroTitle": `${fontSizes.heroTitle}px`,
+    "--font-heroSubtitle": `${fontSizes.heroSubtitle || 20}px`,
+    "--font-sectionTitle": `${fontSizes.sectionTitle}px`,
+    "--font-bodyText": `${fontSizes.bodyText}px`,
+    "--font-cardCategory": `${fontSizes.cardCategory}px`,
+    "--m-font-heroTitle": `${mobileFontSizes?.heroTitle || 40}px`,
+    "--m-font-heroSubtitle": `${mobileFontSizes?.heroSubtitle || 14}px`,
+    "--line-height": layout.lineHeight || "1.2",
+    "--letter-spacing": layout.letterSpacing || "-0.02em",
+    "--text-align": layout.textAlign || "center",
+  } as React.CSSProperties;
+
   return (
     <main
       className="relative min-w-360 bg-black text-white selection:bg-white selection:text-black overflow-x-hidden"
-      style={
-        { "--section-gap": `${layout.sectionGap}px` } as React.CSSProperties
-      }
+      style={designVariables}
     >
       {/* 1. Hero Section: The Portal */}
       <div className="max-w-7xl mx-auto">

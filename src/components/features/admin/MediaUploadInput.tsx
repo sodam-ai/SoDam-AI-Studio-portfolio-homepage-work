@@ -40,14 +40,14 @@ export function MediaUploadInput({
           <button
             type="button"
             onClick={() => setMode("file")}
-            className={`px-3 py-1 text-[7px] uppercase font-black tracking-widest rounded-md transition-all ${mode === "file" ? "bg-white text-black shadow-lg" : "text-white/30 hover:text-white"}`}
+            className={`px-3 py-1 text-[7px] uppercase font-black tracking-widest rounded-md transition-all duration-200 active:scale-[0.98] ${mode === "file" ? "bg-white text-black shadow-lg" : "text-white/30 hover:text-white"}`}
           >
             File
           </button>
           <button
             type="button"
             onClick={() => setMode("url")}
-            className={`px-3 py-1 text-[7px] uppercase font-black tracking-widest rounded-md transition-all ${mode === "url" ? "bg-white text-black shadow-lg" : "text-white/30 hover:text-white"}`}
+            className={`px-3 py-1 text-[7px] uppercase font-black tracking-widest rounded-md transition-all duration-200 active:scale-[0.98] ${mode === "url" ? "bg-white text-black shadow-lg" : "text-white/30 hover:text-white"}`}
           >
             URL
           </button>
@@ -67,7 +67,7 @@ export function MediaUploadInput({
             />
             <label
               htmlFor={`file-${id}`}
-              className={`flex items-center justify-center gap-3 w-full py-3 bg-white/5 hover:bg-white/10 cursor-pointer transition-all text-[10px] uppercase font-black tracking-[0.2em] rounded-xl border border-dashed border-white/10 hover:border-white/30
+              className={`flex items-center justify-center gap-3 w-full py-3 bg-white/5 hover:bg-white/10 cursor-pointer transition-all duration-200 active:scale-[0.98] text-[10px] uppercase font-black tracking-[0.2em] rounded-xl border border-dashed border-white/10 hover:border-white/30
                 ${isUploading ? "opacity-30 cursor-wait" : ""}`}
             >
               <Upload className="w-4 h-4 text-(--accent-primary) animate-pulse" />

@@ -13,7 +13,6 @@ export const CustomCursor = () => {
   const [cursorText, setCursorText] = useState("");
   const [isActive, setIsActive] = useState(true);
 
-  const cursorRef = useRef<HTMLDivElement>(null);
   const requestRef = useRef<number>(null);
   const mousePosition = useRef({ x: 0, y: 0 });
 

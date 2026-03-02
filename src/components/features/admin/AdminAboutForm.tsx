@@ -56,7 +56,7 @@ const ExperienceCard = ({
         {/* Drag Handle */}
         <button
           type="button"
-          className="drag-handle w-12 bg-white/2 flex items-center justify-center border-r border-white/5 cursor-grab active:cursor-grabbing hover:bg-white/5 transition-colors"
+          className="drag-handle w-12 bg-white/2 flex items-center justify-center border-r border-white/5 cursor-grab active:cursor-grabbing hover:bg-white/5 transition-all duration-200 active:scale-[0.98]"
           aria-label="Drag to reorder experience"
         >
           <GripVertical
@@ -68,7 +68,7 @@ const ExperienceCard = ({
         <div className="flex-1 p-8 grid grid-cols-1 md:grid-cols-4 gap-8 relative">
           <button
             onClick={onRemove}
-            className="absolute top-4 right-4 p-2 text-white/10 hover:text-red-500 hover:bg-red-500/10 transition-all opacity-0 group-hover:opacity-100 rounded-md"
+            className="absolute top-4 right-4 p-2 text-white/10 hover:text-red-500 hover:bg-red-500/10 transition-all duration-200 active:scale-[0.98] opacity-0 group-hover:opacity-100 rounded-md"
             title="Delete Entry"
           >
             <Trash2 className="w-3.5 h-3.5" />
@@ -170,7 +170,7 @@ const SkillCategoryCard = ({
     >
       <button
         onClick={onRemove}
-        className="absolute top-4 right-4 p-2 text-white/10 hover:text-red-500 hover:bg-red-500/10 transition-all opacity-0 group-hover:opacity-100 rounded-md"
+        className="absolute top-4 right-4 p-2 text-white/10 hover:text-red-500 hover:bg-red-500/10 transition-all duration-200 active:scale-[0.98] opacity-0 group-hover:opacity-100 rounded-md"
         title="Remove Category"
       >
         <Trash2 className="w-3.5 h-3.5" />
@@ -179,7 +179,7 @@ const SkillCategoryCard = ({
       <div className="flex items-start gap-4">
         <button
           type="button"
-          className="drag-handle mt-7 w-8 h-8 flex items-center justify-center cursor-grab active:cursor-grabbing hover:bg-white/5 rounded-sm transition-colors"
+          className="drag-handle mt-7 w-8 h-8 flex items-center justify-center cursor-grab active:cursor-grabbing hover:bg-white/5 rounded-sm transition-all duration-200 active:scale-[0.98]"
           aria-label="Drag to reorder skill category"
         >
           <GripVertical

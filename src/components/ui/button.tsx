@@ -1,7 +1,8 @@
 import * as React from "react";
+import { cn } from "@/lib/utils";
 
 export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: "default" | "outline" | "ghost" | "secondary" | "accent";
+  variant?: "default" | "outline" | "ghost" | "secondary" | "accent" | "danger";
   size?: "default" | "sm" | "lg" | "icon" | "xl";
 }
 
@@ -14,6 +15,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       ghost: "text-zinc-600 hover:bg-zinc-100 hover:text-zinc-900",
       secondary: "bg-zinc-800 text-white hover:bg-zinc-700",
       accent: "bg-white text-black hover:bg-zinc-200",
+      danger: "bg-red-500/10 text-red-500 hover:bg-red-500 hover:text-white",
     };
 
     const sizes = {
@@ -26,7 +28,12 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 
     return (
       <button
-        className={`inline-flex items-center justify-center rounded-md font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black disabled:pointer-events-none disabled:opacity-50 ${variants[variant]} ${sizes[size]} ${className || ""}`}
+        className={cn(
+          "inline-flex items-center justify-center rounded-md font-medium transition-all duration-200 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-400 disabled:pointer-events-none disabled:opacity-50",
+          variants[variant],
+          sizes[size],
+          className,
+        )}
         ref={ref}
         {...props}
       />

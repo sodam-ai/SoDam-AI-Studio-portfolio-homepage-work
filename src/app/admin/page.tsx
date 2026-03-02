@@ -20,18 +20,40 @@ export default function AdminPage() {
     // Optional global save completion handler
   };
 
-  const handleLogin = (e: React.SyntheticEvent<HTMLFormElement>) => {
+  const handleLogin = async (e: React.SyntheticEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (password === "2026") {
-      setIsAuthenticated(true);
-    } else {
-      alert("비밀번호가 틀렸습니다.");
+    try {
+      const res = await fetch("/api/admin/security", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ currentPassword: password, mode: "login" }),
+      });
+      const result = await res.json();
+      if (result.success) {
+        setIsAuthenticated(true);
+      } else {
+        alert(result.error || "비밀번호가 틀렸습니다.");
+      }
+    } catch (error) {
+      console.error("Login Error:", error);
+      alert("로그인 중 오류가 발생했습니다.");
     }
   };
 
   if (!isAuthenticated) {
     return (
-      <main className="min-h-screen bg-black text-white flex items-center justify-center px-6">
+      <main
+        className="min-h-screen bg-black text-white flex items-center justify-center px-6"
+        style={
+          {
+            fontFamily: "var(--font-outfit), sans-serif",
+            lineHeight: "1.5",
+            letterSpacing: "normal",
+            textAlign: "left",
+            fontSize: "16px",
+          } as React.CSSProperties
+        }
+      >
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -66,7 +88,7 @@ export default function AdminPage() {
             </div>
             <button
               type="submit"
-              className="w-full bg-white text-black font-black uppercase text-[10px] tracking-[0.5em] py-5 hover:bg-white/90 transition-colors"
+              className="w-full bg-white text-black font-black uppercase text-[10px] tracking-[0.5em] py-5 hover:bg-white/90 active:scale-[0.98] transition-all duration-200"
             >
               Enter System
             </button>
@@ -86,7 +108,18 @@ export default function AdminPage() {
   }
 
   return (
-    <main className="min-h-screen bg-[#050505] text-white flex">
+    <main
+      className="min-h-screen bg-[#050505] text-white flex"
+      style={
+        {
+          fontFamily: "var(--font-outfit), sans-serif",
+          lineHeight: "1.5",
+          letterSpacing: "normal",
+          textAlign: "left",
+          fontSize: "16px",
+        } as React.CSSProperties
+      }
+    >
       {/* Sidebar */}
       <aside className="w-64 border-r border-white/5 flex flex-col p-8 space-y-12 shrink-0 h-screen sticky top-0">
         <div className="space-y-2">
@@ -112,7 +145,7 @@ export default function AdminPage() {
                   tab.id as "projects" | "settings" | "about" | "config",
                 )
               }
-              className={`w-full text-left text-[10px] font-black uppercase tracking-[0.3em] py-4 px-6 transition-all ${
+              className={`w-full text-left text-[10px] font-black uppercase tracking-[0.3em] py-4 px-6 transition-all duration-200 active:scale-[0.98] ${
                 activeTab === tab.id
                   ? "bg-white text-black translate-x-2 shadow-[4px_4px_20px_rgba(255,255,255,0.1)]"
                   : "text-white/40 hover:text-white hover:bg-white/5"

@@ -3,6 +3,7 @@
 import { useEffect } from "react";
 
 interface ThemeSyncProps {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   readonly settings: any;
 }
 
