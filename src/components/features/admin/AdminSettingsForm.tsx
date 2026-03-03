@@ -150,64 +150,105 @@ export function AdminSettingsForm({
   }, []);
 
   const fetchSettings = async () => {
+    setIsLoading(true);
     try {
-      const response = await fetch("/api/admin/settings");
-      const result = await response.json();
-      if (result.success && result.data) {
-        // Ensure fonts object exists even if missing in stored data
-        const data = result.data;
-        if (!data.appearance.fonts) {
-          data.appearance.fonts = {
-            fontFamily: "Inter",
-            headingFont: "Inter",
-            titleFont: "Inter",
-            descriptionFont: "Inter",
-          };
+      const response = await fetch("/api/admin/update?type=settings");
+      const contentType = response.headers.get("content-type");
+
+      if (response.ok && contentType?.includes("application/json")) {
+        const result = await response.json();
+        if (result.success) {
+          const data = result.data;
+          // Ensure fonts object exists even if missing in stored data
+          if (!data.appearance.fonts) {
+            data.appearance.fonts = {
+              fontFamily: "Inter",
+              headingFont: "Inter",
+              titleFont: "Inter",
+              descriptionFont: "Inter",
+            };
+          }
+          // Initialize categories if missing
+          if (!data.pages.work.categories) {
+            data.pages.work.categories = [
+              "AI Image",
+              "AI Video",
+              "AI Code",
+              "Vibe Coding",
+              "AI Automation",
+              "Design",
+            ];
+          }
+          setSettings(data);
+        } else {
+          setToast({
+            isVisible: true,
+            message:
+              "설정 데이터를 불러오는데 실패했습니다: " +
+              (result.error || "Unknown Error"),
+            type: "error",
+          });
         }
-        // Initialize categories if missing
-        if (!data.pages.work.categories) {
-          data.pages.work.categories = [
-            "AI Image",
-            "AI Video",
-            "AI Code",
-            "Vibe Coding",
-            "AI Automation",
-            "Design",
-          ];
-        }
-        setSettings(data);
+      } else {
+        const text = await response.text();
+        console.error("API Error Response:", text.substring(0, 100));
+        setToast({
+          isVisible: true,
+          message: "설정 데이터를 불러오는데 실패했습니다 (JSON 형식이 아님)",
+          type: "error",
+        });
       }
     } catch (error) {
-      console.error("Settings fetch error:", error);
+      console.error("Fetch settings error:", error);
+      setToast({
+        isVisible: true,
+        message: "설정 데이터를 불러오는 중 오류가 발생했습니다.",
+        type: "error",
+      });
     } finally {
       setIsLoading(false);
     }
   };
 
   const saveSettings = async () => {
+    if (!settings) return;
     setIsSaving(true);
     try {
-      const response = await fetch("/api/admin/settings", {
+      const response = await fetch("/api/admin/update", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(settings),
+        body: JSON.stringify({ type: "settings", data: settings }),
       });
-      const result = await response.json();
 
-      if (!result.success) throw new Error(result.error || "Failed to save");
-
-      setToast({
-        isVisible: true,
-        message: "SYSTEM DEPLOYED SUCCESSFULLY",
-        type: "success",
-      });
-      if (onSave) onSave();
+      const contentType = response.headers.get("content-type");
+      if (response.ok && contentType?.includes("application/json")) {
+        const result = await response.json();
+        if (result.success) {
+          setToast({
+            isVisible: true,
+            message: "SYSTEM DEPLOYED SUCCESSFULLY",
+            type: "success",
+          });
+          if (onSave) onSave();
+        } else {
+          setToast({
+            isVisible: true,
+            message: "저장 실패: " + result.error,
+            type: "error",
+          });
+        }
+      } else {
+        setToast({
+          isVisible: true,
+          message: "서버 오류: 올바르지 않은 응답 형식",
+          type: "error",
+        });
+      }
     } catch (error) {
-      console.error("Save error:", error);
+      console.error("Save settings error:", error);
       setToast({
         isVisible: true,
-        message:
-          error instanceof Error ? error.message : "Failed to save settings",
+        message: "저장 중 오류가 발생했습니다.",
         type: "error",
       });
     } finally {
@@ -301,13 +342,18 @@ export function AdminSettingsForm({
       }
     }
 
-    setSettings((prev: BrandingSettings) => {
-      const newSettings = structuredClone(prev);
+    setSettings((prev: BrandingSettings | null) => {
+      if (!prev) return null;
+      const newSettings = { ...prev };
       const parts = path.split(".");
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       let current: any = newSettings;
       for (let i = 0; i < parts.length - 1; i++) {
-        if (!current[parts[i]]) current[parts[i]] = {};
-        current = current[parts[i]];
+        const p = parts[i];
+        current[p] = Array.isArray(current[p])
+          ? [...current[p]]
+          : { ...current[p] };
+        current = current[p];
       }
       current[parts.at(-1)!] = value;
       return newSettings;
@@ -975,75 +1021,6 @@ export function AdminSettingsForm({
                             {pos}
                           </button>
                         ))}
-                      </div>
-                    </div>
-                  </AdminCard>
-                </div>
-              </div>
-            </AdminSection>
-
-            {/* TALK PAGE CONFIG */}
-            <AdminSection
-              title="Connect Module"
-              description="Contact channels and call-to-action synchronization"
-              icon={<FileText className="w-4 h-4" />}
-            >
-              <div className="space-y-6">
-                <AdminCard>
-                  <AdminInput
-                    id="talkDescription"
-                    label="Inquiry Narrative"
-                    value={settings.pages.talk.description}
-                    onChange={(e) =>
-                      updateNestedSetting(
-                        "pages.talk.description",
-                        e.target.value,
-                      )
-                    }
-                  />
-                </AdminCard>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <AdminCard>
-                    <AdminInput
-                      id="officialEmail"
-                      label="Official Email"
-                      value={settings.pages.talk.email}
-                      onChange={(e) =>
-                        updateNestedSetting("pages.talk.email", e.target.value)
-                      }
-                    />
-                  </AdminCard>
-
-                  <AdminCard>
-                    <div className="space-y-4">
-                      <span className="text-[10px] font-black uppercase tracking-widest text-white/40 block">
-                        Social Sync
-                      </span>
-                      <div className="space-y-2">
-                        {Object.keys(settings.pages.talk.socials).map(
-                          (platform) => (
-                            <div key={platform} className="flex gap-2">
-                              <div className="bg-white/5 px-3 py-2 text-[10px] border border-white/5 font-mono text-white/30 uppercase min-w-25 flex items-center rounded-xs">
-                                {platform}
-                              </div>
-                              <AdminInput
-                                placeholder="URL or @handle"
-                                value={
-                                  settings.pages.talk.socials[
-                                    platform as keyof typeof settings.pages.talk.socials
-                                  ]
-                                }
-                                onChange={(e) =>
-                                  updateNestedSetting(
-                                    `pages.talk.socials.${platform}`,
-                                    e.target.value,
-                                  )
-                                }
-                              />
-                            </div>
-                          ),
-                        )}
                       </div>
                     </div>
                   </AdminCard>

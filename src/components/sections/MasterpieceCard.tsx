@@ -4,6 +4,9 @@
 import React from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import Link from "next/link";
+import Image from "next/image";
+
+const MotionImage = motion.create(Image);
 
 interface MasterpieceCardProps {
   project: {
@@ -57,10 +60,12 @@ export default function MasterpieceCard({
       <Link href={`/work/${project.id}`}>
         <div className="aspect-video overflow-hidden relative">
           {thumbnailUrl ? (
-            <motion.img
+            <MotionImage
               style={{ top: h }}
               src={thumbnailUrl}
               alt={project.title}
+              fill
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
               className="w-full h-[120%] absolute object-cover transition-transform duration-700 group-hover:scale-105"
             />
           ) : (

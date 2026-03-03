@@ -1,27 +1,5 @@
 [
   {
-    "id": "project-1772346029659",
-    "title": "video",
-    "category": "AI Image",
-    "thumbnail": "/images/projects/1772346046774-1.png",
-    "description": "Project summary...",
-    "tags": [
-      "AI"
-    ],
-    "featured": false,
-    "fullDescription": "",
-    "approach": "",
-    "challenges": [],
-    "images": [],
-    "aspectRatio": "auto",
-    "techWalkthrough": {
-      "title": "Technical Process",
-      "description": "",
-      "steps": []
-    },
-    "videoUrl": "https://www.youtube.com/watch?v=c7_ANA1NiS0"
-  },
-  {
     "id": "ai-visual-art",
     "title": "Abstract Realism V2",
     "category": "AI Image Synthesis",
@@ -52,7 +30,9 @@
         "Texture refinement via Midjourney 'Style Reference'",
         "selective in-painting for anatomical correction"
       ]
-    }
+    },
+    "chosen": false,
+    "selected": false
   },
   {
     "id": "cinematic-ai-motion",
@@ -85,7 +65,9 @@
         "Neural Sound Layering & Final Polish"
       ]
     },
-    "images": []
+    "images": [],
+    "chosen": false,
+    "selected": false
   },
   {
     "id": "vibe-portfolio",
@@ -119,6 +101,8 @@
         "Automated Verification & Aesthetic Polish"
       ]
     },
-    "images": []
+    "images": [],
+    "chosen": false,
+    "selected": false
   }
 ]

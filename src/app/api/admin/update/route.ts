@@ -28,6 +28,12 @@ export async function POST(request: Request) {
       case "site-config":
         filePath = path.join(contentDir, "site-config.json");
         break;
+      case "contact":
+        filePath = path.join(contentDir, "contact.json");
+        break;
+      case "settings":
+        filePath = path.join(process.cwd(), "src/data/settings.json");
+        break;
       default:
         return NextResponse.json(
           { success: false, error: "유효하지 않은 데이터 타입입니다." },
@@ -67,6 +73,7 @@ export async function POST(request: Request) {
     revalidatePath("/", "layout");
     revalidatePath("/work", "page");
     revalidatePath("/work/[id]", "page");
+    revalidatePath("/contact", "page");
     revalidatePath("/admin", "page");
 
     return NextResponse.json({
@@ -102,6 +109,10 @@ export async function GET(request: Request) {
     else if (type === "about") filePath = path.join(contentDir, "about.json");
     else if (type === "site-config")
       filePath = path.join(contentDir, "site-config.json");
+    else if (type === "contact")
+      filePath = path.join(contentDir, "contact.json");
+    else if (type === "settings")
+      filePath = path.join(process.cwd(), "src/data/settings.json");
     else {
       return NextResponse.json(
         { success: false, error: "유효하지 않은 타입입니다." },

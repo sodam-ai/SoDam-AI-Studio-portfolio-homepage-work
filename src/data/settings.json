@@ -2,24 +2,24 @@
   "appearance": {
     "fontSizes": {
       "heroTitle": 70,
-      "heroSubtitle": 20,
-      "sectionTitle": 60,
-      "bodyText": 16,
-      "cardCategory": 12
+      "heroSubtitle": 5,
+      "sectionTitle": 50,
+      "bodyText": 17,
+      "cardCategory": 20
     },
     "mobileFontSizes": {
-      "heroTitle": 40,
+      "heroTitle": 70,
       "heroSubtitle": 14
     },
     "layout": {
-      "sectionGap": 100,
-      "lineHeight": "1.2",
-      "letterSpacing": "-0.02em",
+      "sectionGap": 60,
+      "lineHeight": 1.15,
+      "letterSpacing": "0.2em",
       "textAlign": "center"
     },
     "fonts": {
       "fontFamily": "Inter",
-      "headingFont": "Syne",
+      "headingFont": "Outfit",
       "titleFont": "Inter",
       "descriptionFont": "Inter"
     }
@@ -43,10 +43,10 @@
     "work": {
       "title": "WORK",
       "description": "바이브 코딩과 AI 에이전트 협업으로 탄생시킨 디지털 아트워크 및 개발 산출물 아카이브입니다.",
-      "alignment": "left",
+      "alignment": "center",
       "cardSize": "medium",
-      "cardGap": 32,
-      "gridColumns": 2,
+      "cardGap": 100,
+      "gridColumns": 3,
       "showCategories": true,
       "categories": [
         "AI Image",
@@ -62,7 +62,7 @@
       "description": "이미지, 영상, 코드 — 세 가지 언어로 아이디어를 현실로 만듭니다. AI 도구를 마스터하고, 프롬프트 엔지니어링을 통해 창의적 비전을 정교하게 구현하는 것이 저의 핵심 역량입니다.",
       "alignment": "left",
       "layoutType": "split",
-      "imagePosition": "right"
+      "imagePosition": "top"
     },
     "talk": {
       "title": "TALK",

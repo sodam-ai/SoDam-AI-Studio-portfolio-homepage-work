@@ -180,6 +180,7 @@ export default async function RootLayout({
           <ClientLayout
             interClassName={outfit.className}
             siteName={siteConfig.siteName}
+            logoUrl={siteConfig.logoUrl}
           >
             {children}
           </ClientLayout>

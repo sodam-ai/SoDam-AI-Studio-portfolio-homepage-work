@@ -2,7 +2,7 @@
   "siteName": "SoDam AI Studio",
   "name": "SoDam",
   "role": "AI Creative Studio",
-  "bio": "AI 기술력과 예술적 감각을 결합하여, 기업의 가치를 극대화하는 프리미엄 디지털 솔루션을 제공합니다.",
+  "bio": "사용자 경험(UX)과 최신 AI 기술을 결합하여 비즈니스의 가치를 극대화하는 프리미엄 디지털 솔루션을 제공합니다.",
   "slogan": "Premium AI Design & Interaction Studio",
   "description": "사용자 경험(UX)과 최신 AI 기술을 결합하여 비즈니스의 가치를 극대화하는 프리미먼 디자인 솔루션을 제공합니다.",
   "connectors": [
@@ -20,7 +20,7 @@
   "vibePrompts": [
     {
       "input": "Synthesize a neural landscape with cinematic lighting.",
-      "output": "// Neural Graphics Engine Initialized...\n[Model: Flux.1 Pro]\n[Mode: Abstract Aesthetics]\n// Rendering aesthetic coherence...",
+      "output": "// Neural Graphics Engine Initialized...\n[Model: FWeb 3.0\nlux.1 Pro]\n[Mode: Abstract Aesthetics]\n// Rendering aesthetic coherence...",
       "id": "prompt-1772463940385-0.15532926616130982"
     },
     {
@@ -39,12 +39,11 @@
   "ogImage": "",
   "keywords": "",
   "categories": [
-    "AI Image",
     "AI Video",
     "AI Code",
     "Vibe Coding",
     "AI Automation",
-    "Design",
-    "New Category 7"
-  ]
+    "Design"
+  ],
+  "logoUrl": "/images/projects/1772519557997-소담-AI-스튜디오---로고만-(4).jpg"
 }

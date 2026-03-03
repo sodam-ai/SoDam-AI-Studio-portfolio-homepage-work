@@ -2,7 +2,7 @@
 "use client";
 /* eslint-disable @typescript-eslint/no-unused-vars */
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { Check, Plus, Trash2, GripVertical } from "lucide-react";
 import { motion } from "framer-motion";
 import { ReactSortable } from "react-sortablejs";
@@ -250,16 +250,17 @@ export default function AdminAboutForm() {
     setTimeout(() => setToast((prev) => ({ ...prev, isVisible: false })), 3000);
   };
 
-  useEffect(() => {
-    fetchAboutData();
-  }, []);
+  const generateId = useCallback(
+    () => Math.random().toString(36).substring(2, 9),
+    [],
+  );
 
-  const generateId = () => Math.random().toString(36).substring(2, 9);
-
-  const fetchAboutData = async () => {
+  const fetchAboutData = useCallback(async () => {
     setIsLoading(true);
     try {
-      const res = await fetch("/api/admin/update?type=about");
+      const res = await fetch(`/api/admin/update?type=about&t=${Date.now()}`, {
+        cache: "no-store",
+      });
       const result = await res.json();
       if (result.success) {
         // Ensure all items have IDs for Reorder stability
@@ -281,7 +282,11 @@ export default function AdminAboutForm() {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [generateId]);
+
+  useEffect(() => {
+    fetchAboutData();
+  }, [fetchAboutData]);
 
   const handleUpdate = (field: keyof AboutData, value: string) => {
     if (!data) return;

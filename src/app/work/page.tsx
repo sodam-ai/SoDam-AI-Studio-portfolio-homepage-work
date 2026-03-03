@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { PageTransition } from "@/components/shared/PageTransition";
 import MasterpieceCard from "@/components/sections/MasterpieceCard";
 
-const CATEGORIES = ["All", "AI Image", "AI Video", "Vibe Coding"];
+const CATEGORY_ALL = "All";
 
 interface Project {
   id: string;
@@ -17,33 +17,61 @@ interface Project {
 }
 
 export default function WorkPage() {
-  const [activeCategory, setActiveCategory] = useState("All");
+  const [activeCategory, setActiveCategory] = useState(CATEGORY_ALL);
   const [projects, setProjects] = useState<Project[]>([]);
+  const [categories, setCategories] = useState<string[]>([CATEGORY_ALL]);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const fetchProjects = async () => {
+    const fetchData = async () => {
       try {
         /* cache: 'no-store'를 통해 실시간 동기화 보장 */
-        const res = await fetch("/api/admin/update?type=projects", {
-          cache: "no-store",
-        });
-        const result = await res.json();
-        if (result.success) {
-          setProjects(result.data);
+        const [projectsRes, configRes] = await Promise.all([
+          fetch(`/api/admin/update?type=projects&t=${Date.now()}`, {
+            cache: "no-store",
+          }),
+          fetch(`/api/admin/update?type=site-config&t=${Date.now()}`, {
+            cache: "no-store",
+          }),
+        ]);
+
+        const projectsResult = await projectsRes.json();
+        const configResult = await configRes.json();
+
+        if (projectsResult.success) {
+          setProjects(projectsResult.data);
+        }
+
+        if (
+          configResult.success &&
+          Array.isArray(configResult.data.categories)
+        ) {
+          // site-config.json의 categories는 문자열 배열일 수도 있고 객체 배열일 수도 있음
+          const rawCategories = configResult.data.categories;
+          const parsedCategories = rawCategories
+            .map((c: string | { name?: string }) =>
+              typeof c === "string" ? c.trim() : c?.name?.trim() || "",
+            )
+            .filter((c: string) => c.length > 0); // 빈 문자열이나 undefined 제거
+
+          // 중복 제거 후 카테고리 상태 설정
+          setCategories([
+            CATEGORY_ALL,
+            ...Array.from(new Set(parsedCategories as string[])),
+          ]);
         }
       } catch (error) {
-        console.error("Failed to fetch projects:", error);
+        console.error("Failed to fetch data for work page:", error);
       } finally {
         setIsLoading(false);
       }
     };
 
-    fetchProjects();
+    fetchData();
   }, []);
 
   const filteredProjects = projects.filter((p) => {
-    if (activeCategory === "All") return true;
+    if (activeCategory === CATEGORY_ALL) return true;
 
     // 두 값을 모두 표준화하여 비교 (공백 제거, 소문자화)
     const projectCategory = (p.category || "").toLowerCase().trim();
@@ -91,7 +119,7 @@ export default function WorkPage() {
 
             {/* Category Filter */}
             <div className="flex flex-wrap gap-3 pt-6 border-t border-white/5">
-              {CATEGORIES.map((cat) => {
+              {categories.map((cat) => {
                 const isActive = activeCategory === cat;
                 return (
                   <button

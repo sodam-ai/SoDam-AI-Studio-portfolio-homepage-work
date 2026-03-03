@@ -11,19 +11,21 @@ interface ClientLayoutProps {
   readonly children: React.ReactNode;
   readonly interClassName: string;
   readonly siteName: string;
+  readonly logoUrl?: string;
 }
 
 export function ClientLayout({
   children,
   interClassName,
   siteName,
+  logoUrl,
 }: ClientLayoutProps) {
   const pathname = usePathname();
   const isAdmin = pathname?.startsWith("/admin");
 
   return (
     <>
-      {!isAdmin && <Navbar siteName={siteName} />}
+      {!isAdmin && <Navbar siteName={siteName} logoUrl={logoUrl} />}
       <PageTransition>{children}</PageTransition>
       {!isAdmin && <ChatWidget />}
     </>

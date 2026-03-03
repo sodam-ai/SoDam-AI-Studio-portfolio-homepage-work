@@ -2,7 +2,7 @@
 "use client";
 /* eslint-disable @typescript-eslint/no-unused-vars */
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import {
   Check,
   GripVertical,
@@ -16,9 +16,11 @@ import { ReactSortable } from "react-sortablejs";
 import AdminToast from "@/components/shared/admin/AdminToast";
 import { Button } from "@/components/ui/button";
 import { AdminCard } from "@/components/shared/admin/AdminSection";
+import { MediaUploadInput } from "@/components/features/admin/MediaUploadInput";
 
 interface SiteConfig {
   siteName: string;
+  logoUrl?: string;
   role: string;
   bio: string;
   slogan: string;
@@ -192,6 +194,7 @@ export default function AdminConfigForm() {
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
   const [isSaved, setIsSaved] = useState(false);
+  const [isUploadingLogo, setIsUploadingLogo] = useState(false);
 
   // Toast State
   const [toast, setToast] = useState<{
@@ -212,14 +215,13 @@ export default function AdminConfigForm() {
     setTimeout(() => setToast((prev) => ({ ...prev, isVisible: false })), 3000);
   };
 
-  useEffect(() => {
-    fetchConfig();
-  }, []);
-
-  const fetchConfig = async () => {
+  const fetchConfig = useCallback(async () => {
     setIsLoading(true);
     try {
-      const res = await fetch("/api/admin/update?type=site-config");
+      const res = await fetch(
+        `/api/admin/update?type=site-config&t=${Date.now()}`,
+        { cache: "no-store" },
+      );
       const result = await res.json();
       if (result.success) {
         const data = result.data;
@@ -258,7 +260,11 @@ export default function AdminConfigForm() {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, []);
+
+  useEffect(() => {
+    fetchConfig();
+  }, [fetchConfig]);
 
   const handleUpdate = <T extends keyof SiteConfig>(
     field: T,
@@ -267,6 +273,34 @@ export default function AdminConfigForm() {
     if (!config) return;
     setConfig({ ...config, [field]: value });
     if (isSaved) setIsSaved(false);
+  };
+
+  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setIsUploadingLogo(true);
+    const formData = new FormData();
+    formData.append("file", file);
+
+    try {
+      const res = await fetch("/api/admin/upload", {
+        method: "POST",
+        body: formData,
+      });
+      const data = await res.json();
+      if (data.success && data.data?.url) {
+        handleUpdate("logoUrl", data.data.url);
+        showToast("로고 ᅌ이미지가 업로드되었습니다.");
+      } else {
+        showToast("업로드 실패: " + data.error, "error");
+      }
+    } catch (error) {
+      console.error("Upload error:", error);
+      showToast("업로드 중 오류가 발생했습니다.", "error");
+    } finally {
+      setIsUploadingLogo(false);
+    }
   };
 
   const handleConnectorUpdate = (
@@ -412,6 +446,21 @@ export default function AdminConfigForm() {
 
       <div className="grid grid-cols-1 gap-8 px-2 md:px-0 pb-20">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div className="space-y-4 md:col-span-2">
+            <label className="text-[8px] font-black uppercase tracking-widest text-white/30">
+              Site Logo (Navbar)
+            </label>
+            <MediaUploadInput
+              id="site-logo"
+              value={config.logoUrl || ""}
+              onUrlChange={(url) => handleUpdate("logoUrl", url)}
+              onFileUpload={handleFileUpload}
+              isUploading={isUploadingLogo}
+              uploadLabel="Logo Image"
+              accept="image/*"
+              placeholder="/uploads/logo.png or https://..."
+            />
+          </div>
           <div className="space-y-2">
             <label
               htmlFor="site-name"
@@ -694,7 +743,7 @@ export default function AdminConfigForm() {
           >
             {(config.categories || []).map((category, index) => (
               <AdminCard
-                key={`cat-v2-${category}-${index}`}
+                key={`category-item-${index}`}
                 className="group py-3 px-4"
               >
                 <div className="flex items-center gap-3">

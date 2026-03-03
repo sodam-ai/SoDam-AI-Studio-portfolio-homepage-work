@@ -13,6 +13,7 @@ import {
   Github as GithubIcon,
 } from "lucide-react";
 import { motion } from "framer-motion";
+import Image from "next/image";
 import projectsData from "@/content/projects.json";
 
 // YouTube ID 추출 유틸리티
@@ -94,11 +95,13 @@ export default function ProjectPage({
 
     if (project.images && project.images.length > 0) {
       return (
-        <div className="aspect-video w-full bg-zinc-800">
-          <img
+        <div className="aspect-video w-full bg-zinc-800 relative">
+          <Image
             src={project.images[0]}
             alt={project.title}
-            className="w-full h-full object-cover"
+            fill
+            sizes="100vw"
+            className="object-cover"
           />
         </div>
       );
@@ -106,10 +109,12 @@ export default function ProjectPage({
 
     return (
       <div className="aspect-video w-full bg-zinc-800 relative group overflow-hidden">
-        <img
+        <Image
           src={project.thumbnail}
           alt={project.title}
-          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000"
+          fill
+          sizes="100vw"
+          className="object-cover group-hover:scale-105 transition-transform duration-1000"
         />
         <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
           <span className="text-white/20 font-black uppercase tracking-[0.5em] text-4xl rotate-12">
@@ -134,10 +139,12 @@ export default function ProjectPage({
             playsInline
           />
         ) : (
-          <img
+          <Image
             src={project.thumbnail}
             alt=""
-            className="w-full h-full object-cover blur-[100px]"
+            fill
+            sizes="100vw"
+            className="object-cover blur-[100px]"
           />
         )}
         <div className="absolute inset-0 bg-black/40" />
@@ -265,10 +272,12 @@ export default function ProjectPage({
                         key={img}
                         className="rounded-3xl overflow-hidden border border-white/5 bg-zinc-900 aspect-square group"
                       >
-                        <img
+                        <Image
                           src={img}
                           alt={`${project.title} detail`}
-                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                          fill
+                          sizes="(max-width: 768px) 100vw, 50vw"
+                          className="object-cover group-hover:scale-105 transition-transform duration-700"
                         />
                       </div>
                     ))}

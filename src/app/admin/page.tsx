@@ -6,6 +6,7 @@ import Link from "next/link";
 
 import AdminAboutForm from "@/components/features/admin/AdminAboutForm";
 import AdminConfigForm from "@/components/features/admin/AdminConfigForm";
+import AdminContactForm from "@/components/features/admin/AdminContactForm";
 import AdminProjectForm from "@/components/features/admin/AdminProjectForm";
 import { AdminSettingsForm } from "@/components/features/admin/AdminSettingsForm";
 
@@ -14,7 +15,7 @@ export default function AdminPage() {
   const [isAuthChecked, setIsAuthChecked] = useState(false);
   const [password, setPassword] = useState("");
   const [activeTab, setActiveTab] = useState<
-    "projects" | "about" | "config" | "settings"
+    "projects" | "about" | "config" | "settings" | "contact"
   >("projects");
 
   useEffect(() => {
@@ -153,13 +154,19 @@ export default function AdminPage() {
             { id: "projects", label: "Projects" },
             { id: "settings", label: "Appearance" },
             { id: "about", label: "About Me" },
+            { id: "contact", label: "Contact / Talk" },
             { id: "config", label: "Site Config" },
           ].map((tab) => (
             <button
               key={tab.id}
               onClick={() =>
                 setActiveTab(
-                  tab.id as "projects" | "settings" | "about" | "config",
+                  tab.id as
+                    | "projects"
+                    | "settings"
+                    | "about"
+                    | "contact"
+                    | "config",
                 )
               }
               className={`w-full text-left text-[10px] font-black uppercase tracking-[0.3em] py-4 px-6 transition-all duration-200 active:scale-[0.98] ${
@@ -235,6 +242,19 @@ export default function AdminPage() {
                 className="glass-effect rounded-2xl border border-white/5 p-8"
               >
                 <AdminConfigForm />
+              </motion.div>
+            )}
+
+            {activeTab === "contact" && (
+              <motion.div
+                key="contact"
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                transition={{ duration: 0.3 }}
+                className="glass-effect rounded-2xl border border-white/5 p-8"
+              >
+                <AdminContactForm />
               </motion.div>
             )}
           </AnimatePresence>

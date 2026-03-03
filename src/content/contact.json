@@ -29,6 +29,13 @@
       "value": "010-0000-0000",
       "icon": "Phone",
       "action": "tel:010-0000-0000"
+    },
+    {
+      "type": "new-channel",
+      "label": "NEW LABEL",
+      "value": "NEW VALUE",
+      "icon": "/images/projects/1772515463995-brand-threads.png",
+      "action": "#"
     }
   ]
 }

@@ -29,7 +29,10 @@ export default function AboutPage() {
   useEffect(() => {
     const fetchAboutData = async () => {
       try {
-        const res = await fetch("/api/admin/update?type=about");
+        const res = await fetch(
+          `/api/admin/update?type=about&t=${Date.now()}`,
+          { cache: "no-store" },
+        );
         const result = await res.json();
         if (result.success) {
           setAboutData(result.data);

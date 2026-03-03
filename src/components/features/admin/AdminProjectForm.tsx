@@ -1,4 +1,5 @@
 "use client";
+/* eslint-disable @next/next/no-img-element */
 
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
@@ -97,7 +98,10 @@ export default function AdminProjectForm() {
   const fetchProjects = async () => {
     setIsLoading(true);
     try {
-      const res = await fetch("/api/admin/update?type=projects");
+      const res = await fetch(
+        `/api/admin/update?type=projects&t=${Date.now()}`,
+        { cache: "no-store" },
+      );
       const result = await res.json();
       if (result.success) {
         setProjects(result.data);
@@ -111,7 +115,10 @@ export default function AdminProjectForm() {
 
   const fetchCategories = async () => {
     try {
-      const res = await fetch("/api/admin/update?type=site-config");
+      const res = await fetch(
+        `/api/admin/update?type=site-config&t=${Date.now()}`,
+        { cache: "no-store" },
+      );
       const result = await res.json();
       if (result.success && result.data.categories) {
         setDynamicCategories(result.data.categories);
@@ -542,8 +549,9 @@ export default function AdminProjectForm() {
                 className="bg-white/5 border border-white/10 overflow-hidden shadow-xl"
               >
                 {/* Header for Accordion */}
-                <button
-                  type="button"
+                <div
+                  role="button"
+                  tabIndex={0}
                   className={`w-full flex items-center justify-between p-6 cursor-pointer transition-all duration-200 active:scale-[0.98] ${isExpanded ? "bg-white/5 border-b border-white/10" : "hover:bg-white/10"}`}
                   onClick={() => setExpandedId(isExpanded ? null : project.id)}
                   onKeyDown={(e) => {
@@ -600,7 +608,7 @@ export default function AdminProjectForm() {
                       <LayoutList size={16} className="text-white/20" />
                     </div>
                   </div>
-                </button>
+                </div>
 
                 {isExpanded && (
                   <div className="p-8 space-y-12 bg-black/40">

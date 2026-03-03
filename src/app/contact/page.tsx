@@ -2,7 +2,8 @@
 
 import { motion } from "framer-motion";
 import { Mail, MessageCircle, Phone, ExternalLink } from "lucide-react";
-import contactData from "@/content/contact.json";
+import Image from "next/image";
+import { useState, useEffect } from "react";
 
 /* Instagram 아이콘 (lucide-react의 Instagram은 deprecated) */
 function InstagramIcon({ className }: Readonly<{ className?: string }>) {
@@ -42,11 +43,37 @@ const iconMap: Record<string, React.ElementType> = {
 };
 
 export default function ContactPage() {
-  const { headline, description, channels } = contactData as {
+  const [data, setData] = useState<{
     headline: string;
     description: string;
     channels: ContactChannel[];
-  };
+  } | null>(null);
+
+  useEffect(() => {
+    fetch(`/api/admin/update?type=contact&t=${Date.now()}`, {
+      cache: "no-store",
+    })
+      .then((res) => res.json())
+      .then((result) => {
+        if (result.success) {
+          setData(result.data);
+        }
+      })
+      .catch((err) => console.error("Failed to load contact data:", err));
+  }, []);
+
+  if (!data) {
+    return (
+      <main className="min-h-screen bg-background text-foreground pt-40 pb-32 flex items-center justify-center">
+        <div className="animate-pulse text-white/40 tracking-widest uppercase font-black text-xs text-center space-y-4">
+          <div className="w-8 h-8 mx-auto rounded-full border-t-2 border-white/20 animate-spin" />
+          <p>Loading Channels...</p>
+        </div>
+      </main>
+    );
+  }
+
+  const { headline, description, channels } = data;
 
   return (
     <main className="min-h-screen bg-background text-foreground pt-40 pb-32">
@@ -64,7 +91,7 @@ export default function ContactPage() {
           <h1 className="text-4xl md:text-6xl font-black uppercase tracking-tighter leading-none">
             {headline}
           </h1>
-          <p className="text-lg text-white/50 font-light leading-relaxed max-w-2xl">
+          <p className="text-lg text-white/50 font-light leading-relaxed max-w-2xl whitespace-pre-wrap">
             {description}
           </p>
         </motion.div>
@@ -72,14 +99,22 @@ export default function ContactPage() {
         {/* 채널 그리드 */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {channels.map((channel, idx) => {
-            const IconComponent = iconMap[channel.icon] ?? ExternalLink;
+            const isCustomIcon =
+              channel.icon &&
+              (channel.icon.startsWith("http") || channel.icon.startsWith("/"));
+            const IconComponent = isCustomIcon
+              ? null
+              : iconMap[channel.icon] || ExternalLink;
 
             return (
               <motion.a
                 key={channel.type}
                 href={channel.action}
                 target={
-                  channel.type === "email" || channel.type === "phone"
+                  channel.type === "email" ||
+                  channel.type === "phone" ||
+                  channel.action.startsWith("mailto:") ||
+                  channel.action.startsWith("tel:")
                     ? "_self"
                     : "_blank"
                 }
@@ -87,16 +122,26 @@ export default function ContactPage() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: idx * 0.1 }}
-                className="group flex items-center gap-8 p-8 border border-white/10 hover:border-white/30 hover:bg-white/3 transition-all duration-300 cursor-pointer"
+                className="group flex flex-col sm:flex-row sm:items-center gap-6 sm:gap-8 p-6 sm:p-8 border border-white/10 hover:border-white/30 hover:bg-white/3 transition-all duration-300 cursor-pointer"
               >
-                <div className="w-16 h-16 border border-white/20 flex items-center justify-center shrink-0 group-hover:bg-white group-hover:text-black transition-all">
-                  <IconComponent className="w-6 h-6" />
+                <div className="w-16 h-16 border border-white/20 flex items-center justify-center shrink-0 group-hover:bg-white group-hover:text-black transition-all overflow-hidden bg-white/5">
+                  {isCustomIcon ? (
+                    <Image
+                      src={channel.icon}
+                      alt={channel.label}
+                      width={32}
+                      height={32}
+                      className="w-8 h-8 object-contain grayscale group-hover:grayscale-0 transition-all duration-300"
+                    />
+                  ) : (
+                    IconComponent && <IconComponent className="w-6 h-6" />
+                  )}
                 </div>
                 <div className="flex-1 space-y-1">
                   <h3 className="text-xs font-black uppercase tracking-[0.3em]">
                     {channel.label}
                   </h3>
-                  <p className="text-sm text-white/40 font-medium">
+                  <p className="text-sm text-white/40 font-medium whitespace-pre-wrap">
                     {channel.value}
                   </p>
                 </div>

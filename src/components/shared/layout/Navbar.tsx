@@ -7,8 +7,10 @@ import { usePathname } from "next/navigation";
 
 export function Navbar({
   siteName = "SoDam AI Studio",
+  logoUrl,
 }: Readonly<{
   siteName?: string;
+  logoUrl?: string;
 }>) {
   const [mounted, setMounted] = React.useState(false);
   const pathname = usePathname();
@@ -42,16 +44,34 @@ export function Navbar({
         }}
       >
         <div className="flex items-center gap-3 hover:opacity-75 transition-opacity">
-          {/* SD 배지 */}
-          <div className="w-9 h-9 flex items-center justify-center rounded-lg border border-white/25 bg-white/8 group-hover:border-white/50 transition-all duration-300 shrink-0">
-            <span className="text-white font-black text-sm leading-none select-none">
-              SD
-            </span>
-          </div>
+          {/* SD 배지 또는 커스텀 로고 */}
+          {logoUrl ? (
+            <div className="w-9 h-9 flex items-center justify-center rounded-lg border border-white/25 bg-white/8 group-hover:border-white/50 transition-all duration-300 shrink-0 overflow-hidden">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={logoUrl}
+                alt={`${siteName} 로고`}
+                className="w-full h-full object-cover"
+              />
+            </div>
+          ) : (
+            <div className="w-9 h-9 flex items-center justify-center rounded-lg border border-white/25 bg-white/8 group-hover:border-white/50 transition-all duration-300 shrink-0">
+              <span className="text-white font-black text-sm leading-none select-none">
+                SD
+              </span>
+            </div>
+          )}
 
           {/* 브랜드명 — 한 줄, 크고 선명하게 */}
           <span className="text-white font-bold text-base tracking-normal whitespace-nowrap">
-            SoDam <span className="text-white/60 font-normal">AI Studio</span>
+            {siteName.includes("AI Studio") ? (
+              <>
+                {siteName.replace(" AI Studio", "")}{" "}
+                <span className="text-white/60 font-normal">AI Studio</span>
+              </>
+            ) : (
+              siteName
+            )}
           </span>
         </div>
       </Link>
