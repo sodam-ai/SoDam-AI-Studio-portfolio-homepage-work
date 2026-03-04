@@ -7,35 +7,41 @@
       "label": "이메일",
       "value": "hello@antigravity.ai",
       "icon": "Mail",
-      "action": "mailto:hello@antigravity.ai"
+      "action": "mailto:hello@antigravity.ai",
+      "chosen": false,
+      "selected": false
     },
     {
       "type": "kakao",
       "label": "카카오톡",
       "value": "오픈채팅 바로가기",
       "icon": "MessageCircle",
-      "action": "https://open.kakao.com/"
+      "action": "https://open.kakao.com/",
+      "chosen": false,
+      "selected": false
     },
     {
       "type": "instagram",
       "label": "인스타그램",
       "value": "@antigravity",
       "icon": "Instagram",
-      "action": "https://instagram.com/"
+      "action": "https://instagram.com/",
+      "chosen": false,
+      "selected": false
     },
     {
       "type": "phone",
       "label": "전화",
       "value": "010-0000-0000",
       "icon": "Phone",
-      "action": "tel:010-0000-0000"
-    },
-    {
-      "type": "new-channel",
-      "label": "NEW LABEL",
-      "value": "NEW VALUE",
-      "icon": "/images/projects/1772515463995-brand-threads.png",
-      "action": "#"
+      "action": "tel:010-0000-0000",
+      "chosen": false,
+      "selected": false
     }
-  ]
+  ],
+  "location": {
+    "showLocation": true,
+    "addressText": "경기도 이천시 신둔면 마소로95번길 8",
+    "mapEmbedUrl": "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3173.6899576817764!2d127.396927!3d37.3024813!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x356356109cff7e11%3A0x596dcb1da6c13043!2z6rK96riw64-EIOydtOyynOyLnCDsi6DrkZTrqbQg66eI7IaM66GcOTXrsojquLggOA!5e0!3m2!1sko!2skr!4v1772611841410!5m2!1sko!2skr"
+  }
 }

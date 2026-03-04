@@ -28,16 +28,14 @@
     "hero": {
       "title": "AI IS THE NEW CREATIVE SYNTAX",
       "subtitle": "Crafting digital experiences with AI",
-      "wordStyles": [
-        "solid",
-        "solid",
-        "solid",
-        "line",
-        "line",
-        "solid"
-      ],
+      "wordStyles": ["solid", "solid", "solid", "line", "line", "solid"],
       "alignment": "center"
     }
+  },
+  "location": {
+    "showLocation": false,
+    "addressText": "",
+    "mapEmbedUrl": ""
   },
   "pages": {
     "work": {

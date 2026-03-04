@@ -21,6 +21,11 @@ interface ContactData {
   headline: string;
   description: string;
   channels: ContactChannel[];
+  location: {
+    showLocation: boolean;
+    addressText: string;
+    mapEmbedUrl: string;
+  };
 }
 
 const ContactChannelCard = ({
@@ -203,6 +208,11 @@ export default function AdminContactForm() {
       if (result.success) {
         const sanitizedData: ContactData = {
           ...result.data,
+          location: result.data.location || {
+            showLocation: false,
+            addressText: "",
+            mapEmbedUrl: "",
+          },
           channels: (result.data.channels || []).map(
             (ch: Partial<ContactChannel>) => ({
               ...ch,
@@ -226,6 +236,28 @@ export default function AdminContactForm() {
   const handleUpdate = (field: keyof ContactData, value: string) => {
     if (!data) return;
     setData({ ...data, [field]: value });
+    if (isSaved) setIsSaved(false);
+  };
+
+  const handleLocationUpdate = (
+    field: keyof ContactData["location"],
+    value: boolean | string,
+  ) => {
+    if (!data) return;
+
+    let finalValue = value;
+    // iframe 전체 태그를 붙여넣었을 경우 src 속성만 자동 추출
+    if (field === "mapEmbedUrl" && typeof value === "string") {
+      const match = /src="([^"]+)"/.exec(value);
+      if (match?.[1]) {
+        finalValue = match[1];
+      }
+    }
+
+    setData({
+      ...data,
+      location: { ...data.location, [field]: finalValue },
+    });
     if (isSaved) setIsSaved(false);
   };
 
@@ -436,6 +468,94 @@ export default function AdminContactForm() {
               placeholder="Tell them encouraging words to contact you..."
               className="w-full bg-white/2 border border-white/10 px-6 py-5 text-sm leading-relaxed focus:border-white focus:bg-white/5 outline-none resize-none transition-all rounded-sm"
             />
+          </div>
+        </section>
+
+        {/* Location Section */}
+        <section className="space-y-8 max-w-4xl pt-8 border-t border-white/5">
+          <div className="flex justify-between items-center">
+            <div>
+              <h3 className="text-xs font-black uppercase tracking-[0.4em] text-white/60">
+                Location & Map
+              </h3>
+              <p className="text-[8px] text-white/20 uppercase tracking-widest mt-2">
+                Configure your offline address and Google Maps integration
+              </p>
+            </div>
+            {/* Toggle Switch */}
+            <label className="relative inline-flex items-center cursor-pointer">
+              <input
+                type="checkbox"
+                className="sr-only peer"
+                checked={data.location.showLocation}
+                onChange={(e) =>
+                  handleLocationUpdate("showLocation", e.target.checked)
+                }
+              />
+              <div className="w-11 h-6 bg-white/10 rounded-full peer peer-focus:ring-2 peer-focus:ring-white/20 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-0.5 after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-white/40"></div>
+              <span className="ml-3 text-[9px] font-black uppercase tracking-widest text-white/40">
+                {data.location.showLocation ? "ON" : "OFF"}
+              </span>
+            </label>
+          </div>
+
+          <div
+            className={`space-y-6 transition-all duration-500 overflow-hidden ${
+              data.location.showLocation
+                ? "opacity-100 max-h-250"
+                : "opacity-30 max-h-50 grayscale pointer-events-none"
+            }`}
+          >
+            <div className="space-y-3">
+              <label
+                htmlFor="addressText"
+                className="text-[9px] font-black uppercase tracking-widest text-white/40 flex items-center gap-2"
+              >
+                <span
+                  className="w-1 h-1 bg-white/20 rounded-full"
+                  aria-hidden="true"
+                />{" "}
+                Address Text (e.g. 서울특별시 강남구 테헤란로 123)
+              </label>
+              <input
+                id="addressText"
+                type="text"
+                value={data.location.addressText}
+                onChange={(e) =>
+                  handleLocationUpdate("addressText", e.target.value)
+                }
+                placeholder="Enter physical address visually shown to users"
+                className="w-full bg-white/2 border border-white/10 px-6 py-5 text-sm font-medium focus:border-white focus:bg-white/5 outline-none transition-all rounded-sm"
+              />
+            </div>
+
+            <div className="space-y-3">
+              <label
+                htmlFor="mapEmbedUrl"
+                className="text-[9px] font-black uppercase tracking-widest text-white/40 flex items-center gap-2"
+              >
+                <span
+                  className="w-1 h-1 bg-white/20 rounded-full"
+                  aria-hidden="true"
+                />{" "}
+                Google Maps Embed URL (SRC only)
+              </label>
+              <textarea
+                id="mapEmbedUrl"
+                value={data.location.mapEmbedUrl}
+                onChange={(e) =>
+                  handleLocationUpdate("mapEmbedUrl", e.target.value)
+                }
+                rows={3}
+                placeholder="e.g. https://www.google.com/maps/embed?pb=..."
+                className="w-full bg-white/2 border border-white/10 px-6 py-5 text-sm font-medium focus:border-white focus:bg-white/5 outline-none resize-none transition-all rounded-sm"
+              />
+              <p className="text-[10px] text-white/30 font-medium">
+                * 구글 지도에서 "지도 퍼가기"의 &lt;iframe&gt; 태그 내{" "}
+                <span className="text-white/60">src="..."</span> 안의 주소만
+                복사해서 붙여넣으세요.
+              </p>
+            </div>
           </div>
         </section>
 
