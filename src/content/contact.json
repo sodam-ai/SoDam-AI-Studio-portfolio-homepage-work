@@ -1,5 +1,5 @@
 {
-  "headline": "Let's Create Together",
+  "title": "Let's Create Together",
   "description": "새로운 프로젝트, 협업 제안, 또는 단순한 인사까지 — 언제든 연락주세요.",
   "channels": [
     {
@@ -41,7 +41,7 @@
   ],
   "location": {
     "showLocation": true,
-    "addressText": "경기도 이천시 신둔면 마소로95번길 8",
-    "mapEmbedUrl": "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3173.6899576817764!2d127.396927!3d37.3024813!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x356356109cff7e11%3A0x596dcb1da6c13043!2z6rK96riw64-EIOydtOyynOyLnCDsi6DrkZTrqbQg66eI7IaM66GcOTXrsojquLggOA!5e0!3m2!1sko!2skr!4v1772611841410!5m2!1sko!2skr"
+    "addressText": "서울특별시 강남구",
+    "mapEmbedUrl": "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d6330.810660067051!2d127.06261253041379!3d37.498357219664705!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x357ca4235fb589fb%3A0xb331971bc570bb6a!2z7ISc7Jq47Yq567OE7IucIOqwleuCqOq1rA!5e0!3m2!1sko!2skr!4v1772614997206!5m2!1sko!2skr"
   }
 }

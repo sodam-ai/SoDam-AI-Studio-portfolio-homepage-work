@@ -1,23 +1,50 @@
 {
   "appearance": {
+    "accentColor": "#ffffff",
+    "backgroundColor": "#000000",
+    "surfaceColor": "#050505",
+    "textColor": "#ffffff",
+    "buttonStyle": "sharp",
+    "cursorStyle": "minimal",
     "fontSizes": {
-      "heroTitle": 70,
-      "heroSubtitle": 5,
-      "sectionTitle": 50,
-      "bodyText": 17,
-      "cardCategory": 20
+      "h1": 80,
+      "h2": 40,
+      "body": 16,
+      "small": 12,
+      "heroTitle": 120,
+      "heroSubtitle": 20,
+      "sectionTitle": 52,
+      "bodyText": 14,
+      "cardCategory": 10
     },
     "mobileFontSizes": {
-      "heroTitle": 70,
+      "h1": 40,
+      "h2": 30,
+      "body": 14,
+      "small": 10,
+      "heroTitle": 60,
       "heroSubtitle": 14
     },
     "layout": {
-      "sectionGap": 60,
+      "sectionGap": 70,
+      "containerPadding": 24,
       "lineHeight": 1.15,
       "letterSpacing": "0.2em",
       "textAlign": "center"
     },
+    "animations": {
+      "enableHoverEffects": true,
+      "enablePageTransitions": true,
+      "enableScrollAnimations": true,
+      "intensity": "medium",
+      "enabled": true,
+      "preset": "trendy",
+      "speed": "slow"
+    },
     "fonts": {
+      "header": "Inter",
+      "body": "Inter",
+      "accent": "Inter",
       "fontFamily": "Inter",
       "headingFont": "Outfit",
       "titleFont": "Inter",
@@ -28,8 +55,94 @@
     "hero": {
       "title": "AI IS THE NEW CREATIVE SYNTAX",
       "subtitle": "Crafting digital experiences with AI",
-      "wordStyles": ["solid", "solid", "solid", "line", "line", "solid"],
-      "alignment": "center"
+      "wordStyles": [
+        "solid",
+        "solid",
+        "solid",
+        "solid",
+        "solid",
+        "solid"
+      ],
+      "alignment": "center",
+      "verticalAlignment": "center",
+      "titleSubtitleGap": 30,
+      "paddingTop": 150,
+      "paddingBottom": 180,
+      "minHeight": "auto",
+      "contentOffset": 90,
+      "marginBottom": -20,
+      "titleStyle": {
+        "fontSize": 100,
+        "textAlign": "center",
+        "whiteSpace": "pre-wrap"
+      },
+      "subtitleStyle": {
+        "fontSize": 20,
+        "textAlign": "center",
+        "opacity": 1,
+        "whiteSpace": "pre-wrap"
+      }
+    },
+    "sections": {
+      "showcase": {
+        "isVisible": true,
+        "title": "Showcase",
+        "subtitle": "Selected Works",
+        "description": "세계관을 관통하는 마스터피스. 기술적 정점과 디자인 미학이 응축됩니다.",
+        "alignment": "left",
+        "paddingTop": 60,
+        "paddingBottom": 150,
+        "titleStyle": {
+          "fontSize": 52,
+          "fontWeight": 900,
+          "textAlign": "left"
+        },
+        "subtitleStyle": {
+          "fontSize": 20,
+          "opacity": 1,
+          "textAlign": "left"
+        },
+        "descriptionStyle": {
+          "fontSize": 13,
+          "opacity": 1,
+          "textAlign": "right"
+        },
+        "gridColumns": 3,
+        "cardAspectRatio": "16/9",
+        "showCardDescription": false,
+        "showCardLink": false
+      },
+      "philosophy": {
+        "isVisible": true,
+        "title": "Philosophy",
+        "subtitle": "Vibe Coding",
+        "description": "기술과 인간의 경계에서, 본질적인 가치를 탐구합니다.",
+        "alignment": "center",
+        "paddingTop": 120,
+        "paddingBottom": 60,
+        "titleStyle": {
+          "fontSize": 0
+        }
+      },
+      "contact": {
+        "isVisible": true,
+        "title": "Ready to Build\nThe Future?",
+        "subtitle": "Contact",
+        "alignment": "center",
+        "paddingTop": 10,
+        "paddingBottom": 90,
+        "titleStyle": {
+          "color": "#ffffff"
+        }
+      },
+      "footer": {
+        "isVisible": true,
+        "title": "Antigravity",
+        "subtitle": "Crafting digital experiences with AI",
+        "alignment": "center",
+        "paddingTop": 60,
+        "paddingBottom": 60
+      }
     }
   },
   "location": {
@@ -43,7 +156,7 @@
       "description": "바이브 코딩과 AI 에이전트 협업으로 탄생시킨 디지털 아트워크 및 개발 산출물 아카이브입니다.",
       "alignment": "center",
       "cardSize": "medium",
-      "cardGap": 100,
+      "cardGap": 30,
       "gridColumns": 3,
       "showCategories": true,
       "categories": [
@@ -53,25 +166,51 @@
         "Vibe Coding",
         "AI Automation",
         "Design"
-      ]
+      ],
+      "titleStyle": {},
+      "descriptionStyle": {
+        "textAlign": "center",
+        "opacity": 1,
+        "color": "#ffffff",
+        "whiteSpace": "normal"
+      },
+      "showLabel": true,
+      "showTitle": true,
+      "showDescription": true
     },
     "about": {
       "title": "ABOUT",
       "description": "이미지, 영상, 코드 — 세 가지 언어로 아이디어를 현실로 만듭니다. AI 도구를 마스터하고, 프롬프트 엔지니어링을 통해 창의적 비전을 정교하게 구현하는 것이 저의 핵심 역량입니다.",
-      "alignment": "left",
-      "layoutType": "split",
-      "imagePosition": "top"
+      "story": "",
+      "alignment": "center",
+      "layoutType": "minimal",
+      "imagePosition": "top",
+      "titleStyle": {
+        "textAlign": "left"
+      },
+      "introductionStyle": {},
+      "storyStyle": {},
+      "showLabel": true,
+      "showTitle": true,
+      "showDescription": true
     },
     "talk": {
       "title": "TALK",
       "description": "새로운 프로젝트, 협업 제안, 또는 단순한 인사까지 — 언제든 연락주세요.",
-      "alignment": "left",
+      "alignment": "center",
       "email": "example@email.com",
       "socials": {
         "instagram": "",
         "linkedin": "",
         "github": ""
-      }
+      },
+      "titleStyle": {},
+      "descriptionStyle": {
+        "opacity": 1
+      },
+      "showLabel": true,
+      "showTitle": true,
+      "showDescription": true
     }
   }
 }
