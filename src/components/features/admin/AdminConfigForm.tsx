@@ -1,15 +1,16 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
-/* eslint-disable @typescript-eslint/no-unused-vars */
 
-import { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import {
-  Check,
-  GripVertical,
-  Trash2,
+  Globe,
+  Share2,
+  FolderTree,
   Plus,
+  Trash2,
+  GripVertical,
   RefreshCw,
-  Layers,
+  Search,
+  Settings2,
 } from "lucide-react";
 import { motion } from "framer-motion";
 import { ReactSortable } from "react-sortablejs";
@@ -17,186 +18,34 @@ import AdminToast from "@/components/shared/admin/AdminToast";
 import { Button } from "@/components/ui/button";
 import { AdminCard } from "@/components/shared/admin/AdminSection";
 import { MediaUploadInput } from "@/components/features/admin/MediaUploadInput";
+import { SiteConfig } from "@/types/config";
+import { ConnectorCard } from "./ConnectorCard";
 
-interface SiteConfig {
-  siteName: string;
-  logoUrl?: string;
-  role: string;
-  bio: string;
-  slogan: string;
-  connectors: {
-    id: string;
-    label: string;
-    url: string;
-  }[];
-  vibePrompts: {
-    id: string;
-    input: string;
-    output: string;
-  }[];
-  landingHero?: {
-    title: string;
-    subtitle: string;
-  };
-  metaTitle?: string;
-  metaDescription?: string;
-  ogImage?: string;
-  keywords?: string;
-  categories: string[];
+interface AdminConfigFormProps {
+  section?: "global" | "metadata" | "connectors" | "taxonomy" | "all";
+  showTabs?: boolean;
 }
 
-interface VibePromptCardProps {
-  prompt: SiteConfig["vibePrompts"][0];
-  index: number;
-  onUpdate: (index: number, field: "input" | "output", value: string) => void;
-  onRemove: (index: number) => void;
-}
-
-function VibePromptCard({
-  prompt,
-  index,
-  onUpdate,
-  onRemove,
-}: Readonly<VibePromptCardProps>) {
-  const inputId = `prompt-input-${prompt.id || index}`;
-  const outputId = `prompt-output-${prompt.id || index}`;
-
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, scale: 0.98 }}
-      whileHover={{ scale: 1.01 }}
-      className="p-6 bg-white/2 border border-white/5 group relative flex gap-4 items-start hover:border-white/20 transition-all duration-300 shadow-sm hover:shadow-md"
-    >
-      <div className="drag-handle pt-4 cursor-grab active:cursor-grabbing text-white/20 hover:text-white/60 transition-colors shrink-0">
-        <GripVertical size={16} />
-      </div>
-      <div className="flex-1 space-y-6">
-        <button
-          onClick={() => onRemove(index)}
-          className="absolute top-4 right-4 text-[9px] font-black uppercase tracking-widest text-red-500/40 hover:text-red-500 transition-all duration-200 active:scale-[0.98] opacity-0 group-hover:opacity-100 flex items-center gap-1.5"
-        >
-          <Trash2 size={12} />
-          Remove
-        </button>
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 pt-2">
-          <div className="space-y-2">
-            <label
-              htmlFor={inputId}
-              className="text-[8px] font-black uppercase tracking-widest text-white/30"
-            >
-              User Command (Input)
-            </label>
-            <input
-              id={inputId}
-              type="text"
-              value={prompt.input}
-              onChange={(e) => onUpdate(index, "input", e.target.value)}
-              className="w-full bg-black/20 border border-white/10 px-4 py-3 text-xs outline-none focus:border-white/40 transition-colors"
-            />
-          </div>
-          <div className="space-y-2">
-            <label
-              htmlFor={outputId}
-              className="text-[8px] font-black uppercase tracking-widest text-white/30"
-            >
-              Engine Log (Output)
-            </label>
-            <textarea
-              id={outputId}
-              value={prompt.output}
-              onChange={(e) => onUpdate(index, "output", e.target.value)}
-              rows={2}
-              className="w-full bg-black/20 border border-white/10 px-4 py-3 text-xs outline-none resize-none focus:border-white/40 transition-colors font-mono tracking-tight"
-            />
-          </div>
-        </div>
-      </div>
-    </motion.div>
-  );
-}
-
-interface ConnectorCardProps {
-  connector: SiteConfig["connectors"][0];
-  index: number;
-  onUpdate: (index: number, field: "label" | "url", value: string) => void;
-  onRemove: (index: number) => void;
-}
-
-function ConnectorCard({
-  connector,
-  index,
-  onUpdate,
-  onRemove,
-}: Readonly<ConnectorCardProps>) {
-  const labelId = `connector-label-${connector.id || index}`;
-  const urlId = `connector-url-${connector.id || index}`;
-
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, scale: 0.98 }}
-      whileHover={{ scale: 1.01 }}
-      className="p-6 bg-white/2 border border-white/5 group relative flex gap-4 items-start hover:border-white/20 transition-all duration-300 shadow-sm hover:shadow-md"
-    >
-      <div className="drag-handle pt-4 cursor-grab active:cursor-grabbing text-white/20 hover:text-white/60 transition-colors shrink-0">
-        <GripVertical size={16} />
-      </div>
-      <div className="flex-1 space-y-6">
-        <button
-          onClick={() => onRemove(index)}
-          className="absolute top-4 right-4 text-[9px] font-black uppercase tracking-widest text-red-500/40 hover:text-red-500 transition-all duration-200 active:scale-[0.98] opacity-0 group-hover:opacity-100 flex items-center gap-1.5"
-        >
-          <Trash2 size={12} />
-          Remove
-        </button>
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 pt-2">
-          <div className="space-y-2">
-            <label
-              htmlFor={labelId}
-              className="text-[8px] font-black uppercase tracking-widest text-white/30"
-            >
-              Label (e.g. GitHub, Email)
-            </label>
-            <input
-              id={labelId}
-              type="text"
-              value={connector.label}
-              onChange={(e) => onUpdate(index, "label", e.target.value)}
-              className="w-full bg-black/20 border border-white/10 px-4 py-3 text-xs outline-none focus:border-white/40 transition-colors"
-            />
-          </div>
-          <div className="space-y-2">
-            <label
-              htmlFor={urlId}
-              className="text-[8px] font-black uppercase tracking-widest text-white/30"
-            >
-              URL or Link
-            </label>
-            <input
-              id={urlId}
-              type="text"
-              value={connector.url}
-              onChange={(e) => onUpdate(index, "url", e.target.value)}
-              className="w-full bg-black/20 border border-white/10 px-4 py-3 text-xs outline-none focus:border-white/40 transition-colors font-mono tracking-tight"
-            />
-          </div>
-        </div>
-      </div>
-    </motion.div>
-  );
-}
-
-export default function AdminConfigForm() {
+export function AdminConfigForm({
+  section = "all",
+  showTabs = true,
+}: Readonly<AdminConfigFormProps>) {
   const [config, setConfig] = useState<SiteConfig | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
-  const [isSaved, setIsSaved] = useState(false);
-  const [isUploadingLogo, setIsUploadingLogo] = useState(false);
+  const [saveStatus, setSaveStatus] = useState<"idle" | "success" | "error">(
+    "idle",
+  );
+  const [activeTab, setActiveTab] = useState<string>(
+    section === "all" ? "global" : section,
+  );
 
-  // Toast State
+  useEffect(() => {
+    if (section && section !== "all" && activeTab !== section) {
+      setActiveTab(section);
+    }
+  }, [section, activeTab]);
+
   const [toast, setToast] = useState<{
     isVisible: boolean;
     message: string;
@@ -212,7 +61,6 @@ export default function AdminConfigForm() {
     type: "success" | "error" = "success",
   ) => {
     setToast({ isVisible: true, message, type });
-    setTimeout(() => setToast((prev) => ({ ...prev, isVisible: false })), 3000);
   };
 
   const fetchConfig = useCallback(async () => {
@@ -220,39 +68,13 @@ export default function AdminConfigForm() {
     try {
       const res = await fetch(
         `/api/admin/update?type=site-config&t=${Date.now()}`,
-        { cache: "no-store" },
+        {
+          cache: "no-store",
+        },
       );
       const result = await res.json();
       if (result.success) {
-        const data = result.data;
-        if (data.vibePrompts) {
-          data.vibePrompts = data.vibePrompts.map((p: any) => ({
-            ...p,
-            id: p.id || `prompt-${Date.now()}-${Math.random()}`,
-          }));
-        }
-        if (data.connectors) {
-          data.connectors = data.connectors.map((c: any) => ({
-            ...c,
-            id: c.id || `conn-${Date.now()}-${Math.random()}`,
-          }));
-        } else if (data.socials) {
-          data.connectors = [
-            {
-              id: `conn-${Date.now()}-1`,
-              label: "GitHub",
-              url: data.socials.github || "",
-            },
-            {
-              id: `conn-${Date.now()}-2`,
-              label: "Email",
-              url: data.socials.email || "",
-            },
-          ];
-        } else {
-          data.connectors = [];
-        }
-        setConfig(data);
+        setConfig(result.data);
       }
     } catch (error) {
       console.error("Fetch site config error:", error);
@@ -266,114 +88,16 @@ export default function AdminConfigForm() {
     fetchConfig();
   }, [fetchConfig]);
 
-  const handleUpdate = <T extends keyof SiteConfig>(
-    field: T,
-    value: SiteConfig[T],
-  ) => {
-    if (!config) return;
-    setConfig({ ...config, [field]: value });
-    if (isSaved) setIsSaved(false);
-  };
-
-  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-
-    setIsUploadingLogo(true);
-    const formData = new FormData();
-    formData.append("file", file);
-
-    try {
-      const res = await fetch("/api/admin/upload", {
-        method: "POST",
-        body: formData,
-      });
-      const data = await res.json();
-      if (data.success && data.data?.url) {
-        handleUpdate("logoUrl", data.data.url);
-        showToast("로고 ᅌ이미지가 업로드되었습니다.");
-      } else {
-        showToast("업로드 실패: " + data.error, "error");
-      }
-    } catch (error) {
-      console.error("Upload error:", error);
-      showToast("업로드 중 오류가 발생했습니다.", "error");
-    } finally {
-      setIsUploadingLogo(false);
+  useEffect(() => {
+    if (section && section !== "all") {
+      setActiveTab(section);
     }
-  };
-
-  const handleConnectorUpdate = (
-    index: number,
-    field: "label" | "url",
-    value: string,
-  ) => {
-    if (!config) return;
-    const updated = [...config.connectors];
-    updated[index] = { ...updated[index], [field]: value };
-    setConfig({ ...config, connectors: updated });
-    if (isSaved) setIsSaved(false);
-  };
-
-  const addConnector = () => {
-    if (!config) return;
-    const newConn = {
-      id: `conn-${Date.now()}-${Math.random()}`,
-      label: "New Link",
-      url: "https://",
-    };
-    setConfig({
-      ...config,
-      connectors: [...(config.connectors || []), newConn],
-    });
-    if (isSaved) setIsSaved(false);
-  };
-
-  const removeConnector = (index: number) => {
-    if (!config) return;
-    const updated = config.connectors.filter((_, i) => i !== index);
-    setConfig({ ...config, connectors: updated });
-    if (isSaved) setIsSaved(false);
-  };
-
-  const handlePromptUpdate = (
-    index: number,
-    field: "input" | "output",
-    value: string,
-  ) => {
-    if (!config) return;
-    const updatedPrompts = [...config.vibePrompts];
-    updatedPrompts[index] = { ...updatedPrompts[index], [field]: value };
-    setConfig({ ...config, vibePrompts: updatedPrompts });
-    if (isSaved) setIsSaved(false);
-  };
-
-  const addPrompt = () => {
-    if (!config) return;
-    const newPrompt = {
-      id: `prompt-${Date.now()}-${Math.random()}`,
-      input: "User Input...",
-      output: "AI Response...",
-    };
-    setConfig({
-      ...config,
-      vibePrompts: [...config.vibePrompts, newPrompt],
-    });
-    if (isSaved) setIsSaved(false);
-  };
-
-  const removePrompt = (index: number) => {
-    if (!config) return;
-    const updatedPrompts = config.vibePrompts.filter((_, i) => i !== index);
-    setConfig({ ...config, vibePrompts: updatedPrompts });
-    if (isSaved) setIsSaved(false);
-  };
+  }, [section]);
 
   const saveAll = async () => {
     if (!config) return;
     setIsSaving(true);
     try {
-      // Remove temporary runtime IDs if needed, although it's fine to save them
       const res = await fetch("/api/admin/update", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -381,10 +105,11 @@ export default function AdminConfigForm() {
       });
       const result = await res.json();
       if (result.success) {
-        setIsSaved(true);
-        showToast("사이트 환경 설정이 성공적으로 업데이트되었습니다.");
-        setTimeout(() => setIsSaved(false), 3000);
+        setSaveStatus("success");
+        showToast("설정이 성공적으로 저장되었습니다.");
+        setTimeout(() => setSaveStatus("idle"), 3000);
       } else {
+        setSaveStatus("error");
         showToast("저장 실패: " + result.error, "error");
       }
     } catch (error) {
@@ -395,28 +120,104 @@ export default function AdminConfigForm() {
     }
   };
 
-  if (isLoading)
+  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file || !config) return;
+
+    setIsSaving(true);
+    const formData = new FormData();
+    formData.append("file", file);
+
+    try {
+      const res = await fetch("/api/admin/upload", {
+        method: "POST",
+        body: formData,
+      });
+      const result = await res.json();
+      if (result.success) {
+        setConfig({ ...config, logoUrl: result.url });
+        showToast("이미지가 업로드되었습니다.");
+      } else {
+        showToast("업로드 실패: " + result.error, "error");
+      }
+    } catch (error) {
+      console.error("Upload error:", error);
+      showToast("이미지 업로드 중 오류가 발생했습니다.", "error");
+    } finally {
+      setIsSaving(false);
+    }
+  };
+
+  if (isLoading) {
     return (
-      <div className="text-[10px] uppercase tracking-widest opacity-30 flex items-center gap-4">
-        <div className="w-3 h-3 border-t border-white rounded-full animate-spin" />
-        Accessing configuration...
+      <div className="flex items-center gap-3 p-8 opacity-50">
+        <RefreshCw className="w-4 h-4 animate-spin" />
+        <span className="text-[10px] font-black uppercase tracking-widest">
+          환경 설정 로딩 중...
+        </span>
       </div>
     );
-  if (!config) return <div>Config not found.</div>;
+  }
+
+  if (!config)
+    return (
+      <div className="p-8 text-center text-muted-foreground">
+        설정 데이터를 찾을 수 없습니다.
+      </div>
+    );
+
+  const tabItems = [
+    {
+      id: "global",
+      label: "기본 브랜딩",
+      description: "사이트명, 로고, 직함 등 기본 정체성 설정",
+      icon: <Globe className="w-5 h-5" />,
+      color: "from-blue-500/20 to-cyan-500/20",
+    },
+    {
+      id: "metadata",
+      label: "검색 및 SEO",
+      description: "검색 엔진 노출 및 SNS 공유 최적화 설정",
+      icon: <Search className="w-5 h-5" />,
+      color: "from-purple-500/20 to-pink-500/20",
+    },
+    {
+      id: "connectors",
+      label: "소셜 연동",
+      description: "외부 계정 및 소셜 미디어 연결 관리",
+      icon: <Share2 className="w-5 h-5" />,
+      color: "from-orange-500/20 to-red-500/20",
+    },
+    {
+      id: "taxonomy",
+      label: "분류 체계",
+      description: "프로젝트 카테고리 및 필터링 시스템 관리",
+      icon: <FolderTree className="w-5 h-5" />,
+      color: "from-emerald-500/20 to-teal-500/20",
+    },
+  ];
 
   const getButtonContent = () => {
-    if (isSaving) return "Syncing...";
-    if (isSaved)
+    if (isSaving) {
       return (
         <>
-          <Check className="w-3 h-3" /> Saved!
+          <RefreshCw className="w-3 h-3 mr-2 animate-spin" /> 저장 중...
         </>
       );
-    return "Update System";
+    }
+    if (saveStatus === "success") return "저장 완료";
+    if (saveStatus === "error") return "저장 실패";
+    return "모두 저장";
+  };
+
+  const getButtonStyles = () => {
+    if (saveStatus === "success") return "bg-green-500 text-white";
+    if (saveStatus === "error") return "bg-red-500 text-white";
+    return "bg-white text-black hover:bg-white/90";
   };
 
   return (
-    <div className="w-full space-y-12">
+    <div className="w-full space-y-10 pb-32 animate-in fade-in slide-in-from-bottom-4 duration-700">
       <AdminToast
         isVisible={toast.isVisible}
         message={toast.message}
@@ -424,398 +225,316 @@ export default function AdminConfigForm() {
         onClose={() => setToast((prev) => ({ ...prev, isVisible: false }))}
       />
 
-      <div className="flex justify-between items-center bg-black/50 backdrop-blur-xl p-6 border border-white/10 sticky top-0 z-40">
-        <h2 className="text-xl font-black uppercase tracking-tight">
-          System Configuration
-        </h2>
-        <Button
-          onClick={saveAll}
-          disabled={isSaving}
-          variant={isSaved ? "outline" : "default"}
-          className={`text-[10px] font-black uppercase tracking-widest px-8 h-10 transition-all flex items-center gap-2
-            ${
-              isSaved
-                ? "bg-green-500/10 text-green-400 border-green-500/20 hover:bg-green-500/20 hover:text-green-300"
-                : "bg-white text-black hover:bg-white/90 shadow-[0_0_20px_rgba(255,255,255,0.1)] hover:shadow-[0_0_25px_rgba(255,255,255,0.2)] active:scale-95"
-            }`}
-        >
-          {isSaving && <RefreshCw className="w-3 h-3 animate-spin" />}
-          {getButtonContent()}
-        </Button>
+      {/* 상단 통합 제어 바 */}
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 bg-neutral-900/80 backdrop-blur-2xl p-6 border border-white/10 sticky -top-8 z-50 rounded-2xl shadow-2xl">
+        <div className="flex flex-col gap-1">
+          <h2 className="text-lg font-black tracking-tighter text-white flex items-center gap-2">
+            <Settings2 className="w-5 h-5 text-blue-400" />
+            시스템 통합 제어 센터
+          </h2>
+          <p className="text-[10px] text-white/40 font-bold uppercase tracking-[0.2em]">
+            사이트의 글로벌 환경 설정을 실시간으로 관리합니다
+          </p>
+        </div>
+
+        <div className="flex items-center gap-3 w-full md:w-auto">
+          <div className="hidden lg:flex items-center gap-2 px-4 py-2 bg-white/5 rounded-lg border border-white/5 mr-2">
+            <div className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />
+            <span className="text-[9px] font-black text-white/40 uppercase">
+              시스템 온라인
+            </span>
+          </div>
+          <Button
+            onClick={saveAll}
+            disabled={isSaving}
+            className={`flex-1 md:flex-none px-10 py-3 rounded-xl text-[11px] font-black uppercase tracking-widest transition-all transform hover:scale-[1.02] active:scale-[0.98] ${getButtonStyles()}`}
+          >
+            {getButtonContent()}
+          </Button>
+        </div>
       </div>
 
-      <div className="grid grid-cols-1 gap-8 px-2 md:px-0 pb-20">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          <div className="space-y-4 md:col-span-2">
-            <label className="text-[8px] font-black uppercase tracking-widest text-white/30">
-              Site Logo (Navbar)
-            </label>
-            <MediaUploadInput
-              id="site-logo"
-              value={config.logoUrl || ""}
-              onUrlChange={(url) => handleUpdate("logoUrl", url)}
-              onFileUpload={handleFileUpload}
-              isUploading={isUploadingLogo}
-              uploadLabel="Logo Image"
-              accept="image/*"
-              placeholder="/uploads/logo.png or https://..."
-            />
-          </div>
-          <div className="space-y-2">
-            <label
-              htmlFor="site-name"
-              className="text-[8px] font-black uppercase tracking-widest text-white/30"
+      {/* 대시보드 스타일 네비게이션 카드 그리드 */}
+      {activeTab === "all" || showTabs ? (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-12">
+          {tabItems.map((tab) => (
+            <button
+              key={tab.id}
+              onClick={() => setActiveTab(tab.id)}
+              className={`relative overflow-hidden group p-6 rounded-2xl border transition-all duration-500 text-left ${
+                activeTab === tab.id
+                  ? "bg-white border-white shadow-[0_20px_40px_rgba(255,255,255,0.1)] scale-[1.02]"
+                  : "bg-neutral-900/40 border-white/5 hover:border-white/20 hover:bg-neutral-800/60"
+              }`}
             >
-              Site Identity (Brand Name)
-            </label>
-            <input
-              id="site-name"
-              type="text"
-              value={config.siteName}
-              onChange={(e) => handleUpdate("siteName", e.target.value)}
-              className="w-full bg-black/40 border border-white/10 px-4 py-4 text-sm focus:border-white outline-none transition-colors"
-            />
-          </div>
-          <div className="space-y-2">
-            <label
-              htmlFor="site-role"
-              className="text-[8px] font-black uppercase tracking-widest text-white/30"
-            >
-              Professional Role
-            </label>
-            <input
-              id="site-role"
-              type="text"
-              value={config.role}
-              onChange={(e) => handleUpdate("role", e.target.value)}
-              className="w-full bg-black/40 border border-white/10 px-4 py-4 text-sm focus:border-white outline-none transition-colors"
-            />
-          </div>
-        </div>
-
-        <div className="space-y-2">
-          <label
-            htmlFor="site-slogan"
-            className="text-[8px] font-black uppercase tracking-widest text-white/30"
-          >
-            Global Slogan
-          </label>
-          <input
-            id="site-slogan"
-            type="text"
-            value={config.slogan}
-            onChange={(e) => handleUpdate("slogan", e.target.value)}
-            className="w-full bg-black/40 border border-white/10 px-4 py-4 text-sm focus:border-white outline-none transition-colors"
-          />
-        </div>
-
-        {/* Landing Page Hero Config */}
-        <div className="pt-10 border-t border-white/5 space-y-6">
-          <h3 className="text-[10px] font-black uppercase tracking-[0.3em] text-white/50">
-            Landing Page Hero
-          </h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <div className="space-y-2">
-              <label
-                htmlFor="landing-hero-title"
-                className="text-[8px] font-black uppercase tracking-widest text-white/30"
-              >
-                Hero Title
-              </label>
-              <input
-                id="landing-hero-title"
-                type="text"
-                value={config.landingHero?.title || ""}
-                onChange={(e) => {
-                  const currentHero = config.landingHero || {
-                    title: "",
-                    subtitle: "",
-                  };
-                  handleUpdate("landingHero", {
-                    ...currentHero,
-                    title: e.target.value,
-                  });
-                }}
-                className="w-full bg-black/40 border border-white/10 px-4 py-4 text-sm focus:border-white outline-none transition-colors"
-                placeholder="Ex) Visual Alchemist"
+              <div
+                className={`absolute inset-0 bg-linear-to-br ${tab.color} opacity-0 group-hover:opacity-100 transition-opacity duration-700`}
               />
-            </div>
-            <div className="space-y-2">
-              <label
-                htmlFor="landing-hero-subtitle"
-                className="text-[8px] font-black uppercase tracking-widest text-white/30"
-              >
-                Hero Subtitle
-              </label>
-              <input
-                id="landing-hero-subtitle"
-                type="text"
-                value={config.landingHero?.subtitle || ""}
-                onChange={(e) => {
-                  const currentHero = config.landingHero || {
-                    title: "",
-                    subtitle: "",
-                  };
-                  handleUpdate("landingHero", {
-                    ...currentHero,
-                    subtitle: e.target.value,
-                  });
-                }}
-                className="w-full bg-black/40 border border-white/10 px-4 py-4 text-sm focus:border-white outline-none transition-colors"
-                placeholder="Ex) Crafting digital emotions"
-              />
-            </div>
-          </div>
-        </div>
 
-        <div className="space-y-2">
-          <label
-            htmlFor="site-bio"
-            className="text-[8px] font-black uppercase tracking-widest text-white/30"
-          >
-            Primary Bio / Brand Ethos
-          </label>
-          <textarea
-            id="site-bio"
-            value={config.bio}
-            onChange={(e) => handleUpdate("bio", e.target.value)}
-            rows={4}
-            className="w-full bg-black/40 border border-white/10 px-4 py-4 text-sm focus:border-white outline-none resize-none transition-colors"
-          />
-        </div>
-
-        {/* SEO & Metadata Settings */}
-        <div className="pt-10 border-t border-white/5 space-y-6">
-          <h3 className="text-[10px] font-black uppercase tracking-[0.3em] text-white/50">
-            SEO & Social Metadata
-          </h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <div className="space-y-4">
-              <div className="space-y-2">
-                <label
-                  htmlFor="meta-title"
-                  className="text-[8px] font-black uppercase tracking-widest text-white/30"
+              <div className="relative z-10 flex flex-col gap-4">
+                <div
+                  className={`w-12 h-12 rounded-xl flex items-center justify-center transition-all duration-500 ${
+                    activeTab === tab.id
+                      ? "bg-black text-white"
+                      : "bg-white/5 text-white/40 group-hover:scale-110 group-hover:text-white"
+                  }`}
                 >
-                  Meta Title
-                </label>
-                <input
-                  id="meta-title"
-                  type="text"
-                  value={config.metaTitle || ""}
-                  onChange={(e) => handleUpdate("metaTitle", e.target.value)}
-                  className="w-full bg-black/40 border border-white/10 px-4 py-4 text-sm focus:border-white outline-none transition-colors"
-                  placeholder="Ex) SoDam | AI Creative Studio"
-                />
-              </div>
-              <div className="space-y-2">
-                <label
-                  htmlFor="meta-keywords"
-                  className="text-[8px] font-black uppercase tracking-widest text-white/30"
-                >
-                  Keywords (콤마로 구분)
-                </label>
-                <input
-                  id="meta-keywords"
-                  type="text"
-                  value={config.keywords || ""}
-                  onChange={(e) => handleUpdate("keywords", e.target.value)}
-                  className="w-full bg-black/40 border border-white/10 px-4 py-4 text-sm focus:border-white outline-none transition-colors"
-                  placeholder="Ex) AI, Design, Studio, Portfolio"
-                />
-              </div>
-            </div>
-            <div className="space-y-4">
-              <div className="space-y-2">
-                <label
-                  htmlFor="meta-description"
-                  className="text-[8px] font-black uppercase tracking-widest text-white/30"
-                >
-                  Meta Description
-                </label>
-                <textarea
-                  id="meta-description"
-                  value={config.metaDescription || ""}
-                  onChange={(e) =>
-                    handleUpdate("metaDescription", e.target.value)
-                  }
-                  rows={4}
-                  className="w-full bg-black/40 border border-white/10 px-4 py-4 text-sm focus:border-white outline-none resize-none transition-colors"
-                  placeholder="짧고 명확한 사이트 설명을 입력하세요."
-                />
-              </div>
-              <div className="space-y-2">
-                <label
-                  htmlFor="og-image"
-                  className="text-[8px] font-black uppercase tracking-widest text-white/30"
-                >
-                  Open Graph Image URL (og:image)
-                </label>
-                <input
-                  id="og-image"
-                  type="text"
-                  value={config.ogImage || ""}
-                  onChange={(e) => handleUpdate("ogImage", e.target.value)}
-                  className="w-full bg-black/40 border border-white/10 px-4 py-4 text-sm focus:border-white outline-none transition-colors"
-                  placeholder="https://example.com/og-image.jpg"
-                />
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* External Connectors */}
-        <div className="pt-10 space-y-6">
-          <div className="flex justify-between items-center border-b border-white/10 pb-4">
-            <h3 className="text-[10px] font-black uppercase tracking-[0.3em] text-white/50">
-              External Connectors
-            </h3>
-            <Button
-              onClick={addConnector}
-              variant="outline"
-              className="text-[9px] font-black uppercase tracking-widest border-white/20 px-4 h-9 hover:bg-white hover:text-black hover:border-white transition-all flex items-center gap-2"
-            >
-              <Plus size={12} />
-              Add Connector
-            </Button>
-          </div>
-
-          <ReactSortable
-            list={config.connectors || []}
-            setList={(newState) => handleUpdate("connectors", newState)}
-            className="space-y-4"
-            animation={200}
-            handle=".drag-handle"
-          >
-            {config.connectors.map((connector, index) => (
-              <ConnectorCard
-                key={connector.id || `conn-${index}`}
-                connector={connector}
-                index={index}
-                onUpdate={handleConnectorUpdate}
-                onRemove={removeConnector}
-              />
-            ))}
-          </ReactSortable>
-        </div>
-
-        {/* Category Taxonomy Management */}
-        <div className="pt-10 space-y-6">
-          <div className="flex justify-between items-center border-b border-white/10 pb-4">
-            <div className="space-y-1">
-              <h3 className="text-[10px] font-black uppercase tracking-widest text-white/50 flex items-center gap-2">
-                <Layers size={12} />
-                Category Taxonomy
-              </h3>
-              <p className="text-[9px] text-white/20 uppercase tracking-widest">
-                Manage project classification labels
-              </p>
-            </div>
-            <Button
-              onClick={() => {
-                if (!config) return;
-                const currentCats = config.categories || [];
-                handleUpdate("categories", [
-                  ...currentCats,
-                  `New Category ${currentCats.length + 1}`,
-                ]);
-              }}
-              variant="outline"
-              className="text-[9px] font-black uppercase tracking-widest border-white/20 px-4 h-9 hover:bg-white hover:text-black hover:border-white transition-all flex items-center gap-2"
-            >
-              <Plus size={12} />+ Add New Category
-            </Button>
-          </div>
-
-          <ReactSortable
-            list={(config.categories || []).map((cat, i) => ({
-              id: `cat-${i}`,
-              name: cat,
-            }))}
-            setList={(newState) =>
-              handleUpdate(
-                "categories",
-                newState.map((item) => item.name),
-              )
-            }
-            className="grid grid-cols-1 md:grid-cols-2 gap-4"
-            animation={200}
-            handle=".drag-handle"
-          >
-            {(config.categories || []).map((category, index) => (
-              <AdminCard
-                key={`category-item-${index}`}
-                className="group py-3 px-4"
-              >
-                <div className="flex items-center gap-3">
-                  <GripVertical className="drag-handle w-3 h-3 text-white/10 group-hover:text-white/30 transition-colors cursor-grab" />
-                  <input
-                    type="text"
-                    value={category}
-                    onChange={(e) => {
-                      const newCats = [...(config.categories || [])];
-                      newCats[index] = e.target.value;
-                      handleUpdate("categories", newCats);
-                    }}
-                    className="flex-1 bg-transparent border-none text-[10px] font-black uppercase tracking-widest text-white/80 focus:text-white focus:outline-none"
-                  />
-                  <button
-                    onClick={() => {
-                      const newCats = (config.categories || []).filter(
-                        (_, i) => i !== index,
-                      );
-                      handleUpdate("categories", newCats);
-                    }}
-                    className="opacity-0 group-hover:opacity-100 p-1.5 hover:bg-white/5 text-white/20 hover:text-red-400 transition-all rounded-xs"
+                  {tab.icon}
+                </div>
+                <div>
+                  <h4
+                    className={`text-xs font-black uppercase tracking-widest mb-1 ${activeTab === tab.id ? "text-black" : "text-white"}`}
                   >
-                    <Trash2 className="w-3 h-3" />
-                  </button>
+                    {tab.label}
+                  </h4>
+                  <p
+                    className={`text-[10px] leading-relaxed line-clamp-2 ${activeTab === tab.id ? "text-black/60" : "text-white/40 group-hover:text-white/60"}`}
+                  >
+                    {tab.description}
+                  </p>
+                </div>
+              </div>
+
+              {activeTab === tab.id && (
+                <motion.div
+                  layoutId="active-indicator"
+                  className="absolute bottom-0 left-0 h-1 bg-black w-full"
+                />
+              )}
+            </button>
+          ))}
+        </div>
+      ) : null}
+
+      <div className="relative min-h-[60vh] rounded-3xl overflow-hidden bg-neutral-950/20 backdrop-blur-sm border border-white/5 p-1">
+        {/* 콘텐츠 전환 애니메이션 및 배경 고정 (블랙 플리커 방지) */}
+        <div className="absolute inset-0 bg-black/40 z-0 pointer-events-none" />
+
+        <div className="relative z-10 p-4 md:p-8">
+          {activeTab === "global" && (
+            <div className="space-y-6">
+              <AdminCard
+                title="사이트 고유 식별 정보"
+                description="내비게이션 바와 브랜딩 요소에 표시될 기본 정보입니다"
+              >
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="space-y-2">
+                    <label
+                      htmlFor="site-name"
+                      className="text-[9px] font-black uppercase tracking-widest text-white/30"
+                    >
+                      포트폴리오 타이틀 (사이트명)
+                    </label>
+                    <input
+                      id="site-name"
+                      value={config.siteName || ""}
+                      onChange={(e) =>
+                        setConfig({ ...config, siteName: e.target.value })
+                      }
+                      placeholder="예: HONG GIL DONG"
+                      className="w-full bg-white/5 border border-white/10 px-4 py-3 rounded-lg focus:border-white/40 focus:outline-none transition-all"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <label
+                      htmlFor="site-role"
+                      className="text-[9px] font-black uppercase tracking-widest text-white/30"
+                    >
+                      전문 분야 / 포지션 (직함)
+                    </label>
+                    <input
+                      id="site-role"
+                      value={config.role || ""}
+                      onChange={(e) =>
+                        setConfig({ ...config, role: e.target.value })
+                      }
+                      placeholder="예: CREATIVE DIRECTOR"
+                      className="w-full bg-white/5 border border-white/10 px-4 py-3 rounded-lg focus:border-white/40 focus:outline-none transition-all"
+                    />
+                  </div>
+                  <div className="md:col-span-2 space-y-2">
+                    <label
+                      htmlFor="site-logo"
+                      className="text-[9px] font-black uppercase tracking-widest text-white/30"
+                    >
+                      퍼스널 브랜드 로고
+                    </label>
+                    <MediaUploadInput
+                      id="site-logo"
+                      value={config.logoUrl || ""}
+                      onUrlChange={(url) =>
+                        setConfig({ ...config, logoUrl: url })
+                      }
+                      onFileUpload={handleFileUpload}
+                      isUploading={isSaving}
+                    />
+                  </div>
                 </div>
               </AdminCard>
-            ))}
-          </ReactSortable>
-
-          {(config.categories || []).length === 0 && (
-            <div className="py-12 border border-dashed border-white/10 flex flex-col items-center justify-center gap-3 rounded-sm">
-              <p className="text-[10px] font-black uppercase tracking-[0.2em] text-white/20">
-                No active categories
-              </p>
             </div>
           )}
-        </div>
 
-        {/* Vibe Prompts */}
-        <div className="pt-10 space-y-6">
-          <div className="flex justify-between items-center border-b border-white/10 pb-4">
-            <h3 className="text-[10px] font-black uppercase tracking-[0.3em] text-white/50">
-              Vibe Persona Prompts
-            </h3>
-            <Button
-              onClick={addPrompt}
-              variant="outline"
-              className="text-[9px] font-black uppercase tracking-widest border-white/20 px-4 h-9 hover:bg-white hover:text-black hover:border-white transition-all flex items-center gap-2"
-            >
-              <Plus size={12} />
-              Add Prompt
-            </Button>
-          </div>
+          {activeTab === "metadata" && (
+            <div className="space-y-6">
+              <AdminCard
+                title="검색 최적화 및 공유 데이터 (SEO)"
+                description="Google 검색 결과와 SNS 공유 시 노출될 정보를 설정합니다"
+              >
+                <div className="space-y-6">
+                  <div className="space-y-2">
+                    <label
+                      htmlFor="meta-title"
+                      className="text-[9px] font-black uppercase tracking-widest text-white/30"
+                    >
+                      홈페이지 브라우저 타이틀
+                    </label>
+                    <input
+                      id="meta-title"
+                      value={config.metaTitle || ""}
+                      onChange={(e) =>
+                        setConfig({ ...config, metaTitle: e.target.value })
+                      }
+                      placeholder="검색 엔진에 노출될 제목"
+                      className="w-full bg-white/5 border border-white/10 px-4 py-3 rounded-lg focus:border-white/40 focus:outline-none transition-all"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <label
+                      htmlFor="meta-description"
+                      className="text-[9px] font-black uppercase tracking-widest text-white/30"
+                    >
+                      홈페이지 요약 설명 (Description)
+                    </label>
+                    <textarea
+                      id="meta-description"
+                      value={config.metaDescription || ""}
+                      onChange={(e) =>
+                        setConfig({
+                          ...config,
+                          metaDescription: e.target.value,
+                        })
+                      }
+                      placeholder="검색 결과에 표시될 사이트에 대한 한두 문장 설명"
+                      className="w-full bg-white/5 border border-white/10 px-4 py-3 rounded-lg focus:border-white/40 focus:outline-none transition-all min-h-25"
+                    />
+                  </div>
+                </div>
+              </AdminCard>
+            </div>
+          )}
 
-          <ReactSortable
-            list={config.vibePrompts || []}
-            setList={(newState) => handleUpdate("vibePrompts", newState)}
-            className="space-y-4"
-            animation={200}
-            handle=".drag-handle"
-          >
-            {config.vibePrompts.map((prompt, index) => (
-              <VibePromptCard
-                key={prompt.id || `prompt-${index}`}
-                prompt={prompt}
-                index={index}
-                onUpdate={handlePromptUpdate}
-                onRemove={removePrompt}
-              />
-            ))}
-          </ReactSortable>
+          {activeTab === "connectors" && (
+            <div className="space-y-6">
+              <div className="flex justify-between items-center mb-4">
+                <h3 className="text-sm font-black uppercase tracking-widest">
+                  소셜 데이터 연동 관리
+                </h3>
+                <Button
+                  onClick={() => {}}
+                  variant="outline"
+                  size="sm"
+                  className="text-[9px]"
+                >
+                  <Plus className="w-3 h-3 mr-2" /> 신규 채널 추가
+                </Button>
+              </div>
+              <ReactSortable
+                list={config.connectors || []}
+                setList={(newState) =>
+                  setConfig({ ...config, connectors: newState })
+                }
+                className="space-y-4"
+                handle=".drag-handle"
+              >
+                {(config.connectors || []).map((connector, index) => (
+                  <ConnectorCard
+                    key={connector.id || index}
+                    connector={connector}
+                    index={index}
+                    onUpdate={(idx, field, val) => {
+                      const updated = [...(config.connectors || [])];
+                      updated[idx] = { ...updated[idx], [field]: val };
+                      setConfig({ ...config, connectors: updated });
+                    }}
+                    onRemove={(idx) => {
+                      const updated = (config.connectors || []).filter(
+                        (_, i) => i !== idx,
+                      );
+                      setConfig({ ...config, connectors: updated });
+                    }}
+                  />
+                ))}
+              </ReactSortable>
+            </div>
+          )}
+
+          {activeTab === "taxonomy" && (
+            <div className="space-y-6">
+              <AdminCard
+                title="프로젝트 분류 체계 관리"
+                description="작업물 리스트 필터링에 사용되는 카테고리 항목들입니다"
+              >
+                <ReactSortable
+                  list={(config.categories || []).map((cat, i) => ({
+                    id: `cat-${i}`,
+                    name: cat,
+                  }))}
+                  setList={(newState) =>
+                    setConfig({
+                      ...config,
+                      categories: newState.map((item) => item.name),
+                    })
+                  }
+                  className="grid grid-cols-1 md:grid-cols-2 gap-4"
+                  handle=".drag-handle"
+                >
+                  {(config.categories || []).map((category, index) => (
+                    <div
+                      key={`${category}-${index}`}
+                      className="flex items-center gap-3 p-3 bg-white/5 border border-white/10 rounded-lg group"
+                    >
+                      <GripVertical className="drag-handle w-3 h-3 text-white/10 group-hover:text-white/30 cursor-grab" />
+                      <input
+                        value={category}
+                        onChange={(e) => {
+                          const newCats = [...(config.categories || [])];
+                          newCats[index] = e.target.value;
+                          setConfig({ ...config, categories: newCats });
+                        }}
+                        className="flex-1 bg-transparent border-none text-[10px] font-black uppercase tracking-widest focus:outline-none"
+                      />
+                      <button
+                        onClick={() => {
+                          const newCats = (config.categories || []).filter(
+                            (_, i) => i !== index,
+                          );
+                          setConfig({ ...config, categories: newCats });
+                        }}
+                        className="opacity-0 group-hover:opacity-100 p-1 hover:text-red-400 transition-all"
+                      >
+                        <Trash2 className="w-3 h-3" />
+                      </button>
+                    </div>
+                  ))}
+                </ReactSortable>
+                <div className="mt-6">
+                  <Button
+                    onClick={() => {
+                      const newCats = [
+                        ...(config.categories || []),
+                        "새 카테고리",
+                      ];
+                      setConfig({ ...config, categories: newCats });
+                    }}
+                    variant="outline"
+                    className="w-full text-[9px] border-dashed border-white/10 hover:border-white/30"
+                  >
+                    <Plus className="w-3 h-3 mr-2" /> 카테고리 추가
+                  </Button>
+                </div>
+              </AdminCard>
+            </div>
+          )}
         </div>
       </div>
     </div>

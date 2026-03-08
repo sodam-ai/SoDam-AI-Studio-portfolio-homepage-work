@@ -12,7 +12,16 @@ export function ThemeSync({ settings }: ThemeSyncProps) {
     if (!settings?.appearance) return;
 
     const root = document.documentElement;
-    const { fontSizes, mobileFontSizes, layout, fonts } = settings.appearance;
+    const {
+      fontSizes,
+      mobileFontSizes,
+      layout,
+      fonts,
+      accentColor,
+      backgroundColor,
+      surfaceColor,
+      textColor,
+    } = settings.appearance;
 
     // Desktop Font Sizes
     if (fontSizes) {
@@ -57,6 +66,31 @@ export function ThemeSync({ settings }: ThemeSyncProps) {
       root.style.setProperty("--font-primary", family);
       // For global body application if needed
       document.body.style.fontFamily = family;
+    }
+    if (fonts?.headingFont) {
+      const headingFamily =
+        fonts.headingFont === "Outfit"
+          ? "var(--font-outfit)"
+          : fonts.headingFont;
+      root.style.setProperty("--font-heading", headingFamily);
+    }
+
+    // Colors
+    if (backgroundColor)
+      root.style.setProperty("--background", backgroundColor);
+    if (textColor) root.style.setProperty("--foreground", textColor);
+    if (surfaceColor) root.style.setProperty("--card", surfaceColor);
+    if (accentColor) {
+      root.style.setProperty("--primary", accentColor);
+      root.style.setProperty("--accent", accentColor);
+    }
+
+    // Styles
+    if (settings.appearance.buttonStyle) {
+      root.dataset.buttonStyle = settings.appearance.buttonStyle;
+    }
+    if (settings.appearance.cursorStyle) {
+      root.dataset.cursorStyle = settings.appearance.cursorStyle;
     }
   }, [settings]);
 

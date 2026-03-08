@@ -8,6 +8,8 @@ import { motion } from "framer-motion";
 import { ReactSortable } from "react-sortablejs";
 import AdminToast from "@/components/shared/admin/AdminToast";
 import { Button } from "@/components/ui/button";
+import { StyleController } from "@/components/shared/admin/StyleController";
+import { ElementStyle } from "@/types/style";
 
 interface ExperienceItem {
   id: string;
@@ -28,6 +30,8 @@ interface AboutData {
   story: string;
   experience: ExperienceItem[];
   skills: SkillGroup[];
+  introductionStyle?: ElementStyle;
+  storyStyle?: ElementStyle;
 }
 
 // Sub-component for Experience Reorder Item with Drag Handle
@@ -288,6 +292,12 @@ export default function AdminAboutForm() {
     fetchAboutData();
   }, [fetchAboutData]);
 
+  const handleStyleUpdate = (field: string, style: ElementStyle) => {
+    if (!data) return;
+    setData({ ...data, [field]: style });
+    if (isSaved) setIsSaved(false);
+  };
+
   const handleUpdate = (field: keyof AboutData, value: string) => {
     if (!data) return;
     setData({ ...data, [field]: value });
@@ -445,7 +455,7 @@ export default function AdminAboutForm() {
         onClose={() => setToast((prev) => ({ ...prev, isVisible: false }))}
       />
 
-      <div className="flex justify-between items-center bg-black/50 backdrop-blur-xl p-8 border border-white/10 sticky top-0 z-40 -mx-8 rounded-b-2xl">
+      <div className="flex justify-between items-center bg-black/50 backdrop-blur-xl p-8 border border-white/10 sticky top-[-2rem] md:top-[-3rem] z-40 -mx-8 rounded-b-2xl">
         <div className="space-y-1">
           <h2 className="text-2xl font-black uppercase tracking-tighter">
             Biography Editor
@@ -492,6 +502,13 @@ export default function AdminAboutForm() {
               className="w-full bg-white/2 border border-white/10 px-6 py-5 text-base font-medium focus:border-white focus:bg-white/5 outline-none transition-all rounded-sm"
             />
           </div>
+          <StyleController
+            label="Headline Statement"
+            style={data.introductionStyle}
+            onChange={(style: ElementStyle) =>
+              handleStyleUpdate("introductionStyle", style)
+            }
+          />
           <div className="space-y-3">
             <label
               htmlFor="detail-story"
@@ -512,6 +529,13 @@ export default function AdminAboutForm() {
               className="w-full bg-white/2 border border-white/10 px-6 py-5 text-sm leading-relaxed focus:border-white focus:bg-white/5 outline-none resize-none transition-all rounded-sm"
             />
           </div>
+          <StyleController
+            label="Full Biography"
+            style={data.storyStyle}
+            onChange={(style: ElementStyle) =>
+              handleStyleUpdate("storyStyle", style)
+            }
+          />
         </section>
 
         {/* 경력 섹션 */}

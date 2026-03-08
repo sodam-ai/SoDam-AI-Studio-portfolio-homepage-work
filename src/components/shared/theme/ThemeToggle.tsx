@@ -35,8 +35,6 @@ export function ThemeToggle() {
     } else {
       document.documentElement.classList.remove("dark");
     }
-
-    console.log("Theme toggled to:", newTheme); // Debug log
   };
 
   if (!mounted) return null;

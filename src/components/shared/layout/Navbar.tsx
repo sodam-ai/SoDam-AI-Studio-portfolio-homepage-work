@@ -31,7 +31,7 @@ export function Navbar({
   }
 
   return (
-    <nav className="fixed top-6 left-1/2 -translate-x-1/2 w-[95%] max-w-5xl flex justify-between items-center px-8 py-4 bg-white/5 backdrop-blur-3xl border border-white/10 rounded-full z-50 shadow-[0_30px_60px_rgba(0,0,0,0.4)] transition-all duration-700 animate-in fade-in slide-in-from-top-10">
+    <nav className="fixed top-6 left-1/2 -translate-x-1/2 w-[95%] max-w-5xl flex justify-between items-center px-4 py-3 md:px-8 md:py-4 bg-white/5 backdrop-blur-3xl border border-white/10 rounded-full z-50 shadow-[0_30px_60px_rgba(0,0,0,0.4)] transition-all duration-700 animate-in fade-in slide-in-from-top-10">
       {/* 로고 영역 */}
       <Link
         href="/"

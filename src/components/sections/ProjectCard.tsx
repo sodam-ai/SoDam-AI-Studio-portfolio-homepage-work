@@ -1,11 +1,11 @@
 "use client";
 
+import React from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
+import { styleToCss, ElementStyle } from "@/types/style";
 
 // src/components/sections/ProjectCard.tsx - modified by antigravity
-// Type definitions are used here, however, real data shapes and specific categories
-// need to reflect `Vibe Coding` instead of `Development` in type mappings or arrays if any exist.
 interface Project {
   id: string;
   title: string;
@@ -16,16 +16,27 @@ interface Project {
   aspectRatio?: string;
 }
 
+interface ProjectCardProps {
+  project: Project;
+  index: number;
+  categoryStyle?: ElementStyle;
+  titleStyle?: ElementStyle;
+  descriptionStyle?: ElementStyle;
+}
+
 export function ProjectCard({
   project,
   index,
-}: Readonly<{ project: Project; index: number }>) {
+  categoryStyle,
+  titleStyle,
+  descriptionStyle,
+}: Readonly<ProjectCardProps>) {
   return (
     <Link href={`/work/${project.id}`}>
       <motion.div
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 1.5, ease: [0.19, 1, 0.22, 1] }} // Replaced var() with literal for direct control
+        transition={{ duration: 1.5, ease: [0.19, 1, 0.22, 1] }}
         className="group relative flex flex-col space-y-6 cursor-pointer"
       >
         <div
@@ -58,7 +69,10 @@ export function ProjectCard({
           </div>
 
           <div className="absolute top-6 left-6 z-20">
-            <div className="bg-black/40 backdrop-blur-md px-3 py-1 border border-white/5 rounded-full">
+            <div
+              className="bg-black/40 backdrop-blur-md px-3 py-1 border border-white/5 rounded-full"
+              style={styleToCss(categoryStyle)}
+            >
               <span className="text-[8px] font-bold uppercase tracking-[0.2em] text-white/60">
                 {project.category}
               </span>
@@ -68,14 +82,20 @@ export function ProjectCard({
 
         <div className="flex flex-col space-y-3 px-1">
           <div className="flex justify-between items-end">
-            <h3 className="text-xl font-bold uppercase tracking-tight text-white leading-none text-premium">
+            <h3
+              className="text-xl font-bold uppercase tracking-tight text-white leading-none text-premium"
+              style={styleToCss(titleStyle)}
+            >
               {project.title}
             </h3>
             <span className="text-[10px] font-mono opacity-20 text-white">
               /{index + 1 < 10 ? `0${index + 1}` : index + 1}
             </span>
           </div>
-          <p className="text-[11px] text-white/40 font-medium leading-relaxed max-w-[95%] line-clamp-2">
+          <p
+            className="text-[11px] text-white/40 font-medium leading-relaxed max-w-[95%] line-clamp-2"
+            style={styleToCss(descriptionStyle)}
+          >
             {project.description}
           </p>
           <div className="flex gap-2 pt-2">

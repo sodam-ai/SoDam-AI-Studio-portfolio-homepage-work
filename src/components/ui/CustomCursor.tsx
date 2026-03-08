@@ -77,15 +77,16 @@ export const CustomCursor = () => {
     <AnimatePresence>
       {isVisible && (
         <div
-          className="fixed inset-0 z-9999999 pointer-events-none"
+          className="custom-cursor-element fixed inset-0 z-[9999999] pointer-events-none"
           style={{ isolation: "isolate" }}
         >
-          {/* 글로벌 커서 숨김 스타일 */}
+          {/* 글로벌 커서 숨김 스타일 (classic 에서는 커서 보이기) */}
           <style
             dangerouslySetInnerHTML={{
               __html: `
-            * { cursor: none !important; }
-            input, textarea { cursor: text !important; }
+            html:not([data-cursor-style="classic"]) * { cursor: none !important; }
+            html:not([data-cursor-style="classic"]) input, 
+            html:not([data-cursor-style="classic"]) textarea { cursor: text !important; }
           `,
             }}
           />

@@ -49,9 +49,16 @@ export function AdminSection({
 interface AdminCardProps {
   children: React.ReactNode;
   className?: string;
+  title?: string;
+  description?: string;
 }
 
-export function AdminCard({ children, className }: Readonly<AdminCardProps>) {
+export function AdminCard({
+  children,
+  className,
+  title,
+  description,
+}: Readonly<AdminCardProps>) {
   return (
     <div
       className={cn(
@@ -59,6 +66,20 @@ export function AdminCard({ children, className }: Readonly<AdminCardProps>) {
         className,
       )}
     >
+      {(title || description) && (
+        <div className="mb-6 space-y-1">
+          {title && (
+            <h3 className="text-xs font-black uppercase tracking-[0.2em] text-white/80">
+              {title}
+            </h3>
+          )}
+          {description && (
+            <p className="text-[9px] text-white/30 uppercase tracking-widest">
+              {description}
+            </p>
+          )}
+        </div>
+      )}
       {children}
     </div>
   );
