@@ -64,9 +64,35 @@ body {
   min-height: 100vh;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  font-feature-settings: "cv11", "ss01", "ss03", "tnum";
   line-height: var(--line-height, 1.6);
   letter-spacing: var(--letter-spacing, -0.02em);
   text-align: var(--text-align, center);
+
+  /* Universal Environment Normalizer */
+  word-break: keep-all;
+  overflow-wrap: break-word;
+  padding-left: env(safe-area-inset-left);
+  padding-right: env(safe-area-inset-right);
+}
+
+/* iOS Safari 100vh fix */
+@supports (-webkit-touch-callout: none) {
+  .min-h-screen {
+    min-height: -webkit-fill-available;
+  }
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.font-heading {
+  font-family:
+    var(--font-heading, var(--font-primary, var(--font-outfit))), sans-serif;
 }
 
 /* Premium Utilities */
@@ -105,9 +131,46 @@ html {
   scroll-behavior: smooth;
 }
 
-/* Hide all theme-switching remnants visually if any exist */
+/* Theme sync identifiers - do not unset all here as it can wipe out root styles */
 [data-vibe],
 .dark,
 .light {
-  all: unset;
+  /* Placeholder for potential shared theme transitions */
+}
+
+/* Dynamic Button Styles */
+[data-button-style="sharp"] .dynamic-btn {
+  border-radius: 0 !important;
+}
+[data-button-style="rounded"] .dynamic-btn {
+  border-radius: 9999px !important;
+}
+[data-button-style="glass"] .dynamic-btn {
+  background: rgba(255, 255, 255, 0.05) !important;
+  backdrop-filter: blur(10px) !important;
+  border: 1px solid var(--border) !important;
+  color: var(--foreground) !important;
+  border-radius: 8px !important;
+}
+[data-button-style="glass"] .dynamic-btn:hover {
+  background: rgba(255, 255, 255, 0.1) !important;
+}
+@utility text-outline {
+  -webkit-text-stroke: 1.5px rgba(255, 255, 255, 0.8);
+  color: transparent;
+  filter: drop-shadow(0 0 2px rgba(255, 255, 255, 0.1));
+}
+
+@utility text-accent {
+  background: linear-gradient(135deg, #ffffff 0%, #a1a1a1 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-style: italic;
+}
+
+@utility text-glow {
+  color: #ffffff;
+  text-shadow:
+    0 0 15px rgba(255, 255, 255, 0.6),
+    0 0 30px rgba(255, 255, 255, 0.2);
 }

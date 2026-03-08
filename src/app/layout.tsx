@@ -3,6 +3,7 @@ import { Outfit } from "next/font/google";
 import "./globals.css";
 import { ClientLayout } from "@/components/shared/layout/ClientLayout";
 import { VibeProvider } from "@/components/features/vibe-switcher/VibeContext";
+import { SettingsProvider } from "@/components/providers/SettingsProvider";
 import fs from "node:fs/promises";
 import path from "node:path";
 
@@ -72,10 +73,12 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const siteConfig = await getSiteConfig();
   const settings = await getSettings();
   const theme = settings?.appearance?.theme || "black";
   const themeClass = theme === "black" ? "" : `theme-${theme}`;
+
+  const siteName = settings?.branding?.siteName || "Portfolio";
+  const logoUrl = settings?.branding?.logoUrl;
 
   const appearance = settings?.appearance || {};
   const fontSizes = appearance.fontSizes || {};
@@ -177,13 +180,15 @@ export default async function RootLayout({
         <ThemeSync settings={settings} />
         <CustomCursor />
         <VibeProvider>
-          <ClientLayout
-            interClassName={outfit.className}
-            siteName={siteConfig.siteName}
-            logoUrl={siteConfig.logoUrl}
-          >
-            {children}
-          </ClientLayout>
+          <SettingsProvider initialSettings={settings}>
+            <ClientLayout
+              interClassName={outfit.className}
+              siteName={siteName}
+              logoUrl={logoUrl}
+            >
+              {children}
+            </ClientLayout>
+          </SettingsProvider>
         </VibeProvider>
       </body>
     </html>

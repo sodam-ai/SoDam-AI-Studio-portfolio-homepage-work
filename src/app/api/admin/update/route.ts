@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import fs from "node:fs/promises";
-import path from "node:path";
+import { createApiResponse, getFilePathForType } from "@/lib/api";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
@@ -14,39 +14,14 @@ export async function POST(request: Request) {
     const body = await request.json();
     const { type, data } = body;
 
-    // 업데이트할 파일 경로 설정
-    const contentDir = path.join(process.cwd(), "src", "content");
-    let filePath = "";
-
-    switch (type) {
-      case "projects":
-        filePath = path.join(contentDir, "projects.json");
-        break;
-      case "about":
-        filePath = path.join(contentDir, "about.json");
-        break;
-      case "site-config":
-        filePath = path.join(contentDir, "site-config.json");
-        break;
-      case "contact":
-        filePath = path.join(contentDir, "contact.json");
-        break;
-      case "settings":
-        filePath = path.join(process.cwd(), "src/data/settings.json");
-        break;
-      default:
-        return NextResponse.json(
-          { success: false, error: "유효하지 않은 데이터 타입입니다." },
-          { status: 400 },
-        );
+    const filePath = getFilePathForType(type);
+    if (!filePath) {
+      return createApiResponse(null, "유효하지 않은 데이터 타입입니다.", 400);
     }
 
     // 데이터 유효성 검사 및 기본값 할당
     if (!data) {
-      return NextResponse.json(
-        { success: false, error: "저장할 데이터가 없습니다." },
-        { status: 400 },
-      );
+      return createApiResponse(null, "저장할 데이터가 없습니다.", 400);
     }
 
     let finalData = data;
@@ -76,20 +51,22 @@ export async function POST(request: Request) {
     revalidatePath("/contact", "page");
     revalidatePath("/admin", "page");
 
+    // 클라이언트가 기존 포맷의 success: true 와 message/error를 기대하는지 확인하기 위해
+    // createApiResponse가 일관된 형식을 반환하도록 합니다.
     return NextResponse.json({
       success: true,
       message: `${type} 데이터가 성공적으로 저장되었습니다.`,
+      data: finalData,
+      error: null,
+      meta: { page: 1, total: 1 },
     });
   } catch (error) {
     console.error("Admin API Error:", error);
-    return NextResponse.json(
-      {
-        success: false,
-        error:
-          "서버 오류가 발생했습니다: " +
-          (error instanceof Error ? error.message : "알 수 없는 오류"),
-      },
-      { status: 500 },
+    return createApiResponse(
+      null,
+      "서버 오류가 발생했습니다: " +
+        (error instanceof Error ? error.message : "알 수 없는 오류"),
+      500,
     );
   }
 }
@@ -101,34 +78,30 @@ export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const type = searchParams.get("type");
 
-  try {
-    const contentDir = path.join(process.cwd(), "src", "content");
-    let filePath = "";
+  if (!type) {
+    return createApiResponse(null, "타입 파라미터가 필요합니다.", 400);
+  }
 
-    if (type === "projects") filePath = path.join(contentDir, "projects.json");
-    else if (type === "about") filePath = path.join(contentDir, "about.json");
-    else if (type === "site-config")
-      filePath = path.join(contentDir, "site-config.json");
-    else if (type === "contact")
-      filePath = path.join(contentDir, "contact.json");
-    else if (type === "settings")
-      filePath = path.join(process.cwd(), "src/data/settings.json");
-    else {
-      return NextResponse.json(
-        { success: false, error: "유효하지 않은 타입입니다." },
-        { status: 400 },
-      );
+  try {
+    const filePath = getFilePathForType(type);
+    if (!filePath) {
+      return createApiResponse(null, "유효하지 않은 데이터 타입입니다.", 400);
     }
 
     const fileContent = await fs.readFile(filePath, "utf-8");
-    return NextResponse.json({ success: true, data: JSON.parse(fileContent) });
+    const data = JSON.parse(fileContent);
+
+    return NextResponse.json({
+      success: true,
+      data,
+      error: null,
+      meta: { page: 1, total: 1 },
+    });
   } catch (error) {
-    return NextResponse.json(
-      {
-        success: false,
-        error: error instanceof Error ? error.message : "알 수 없는 오류",
-      },
-      { status: 500 },
+    return createApiResponse(
+      null,
+      error instanceof Error ? error.message : "알 수 없는 오류",
+      500,
     );
   }
 }

@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { writeFile, mkdir } from "node:fs/promises";
 import { join } from "node:path";
+import { createApiResponse } from "@/lib/api";
 
 export async function POST(request: NextRequest) {
   try {
@@ -8,10 +9,7 @@ export async function POST(request: NextRequest) {
     const file = formData.get("file") as File | null;
 
     if (!file) {
-      return NextResponse.json(
-        { success: false, error: "파일이 없습니다." },
-        { status: 400 },
-      );
+      return createApiResponse(null, "파일이 없습니다.", 400);
     }
 
     const bytes = await file.arrayBuffer();
@@ -62,14 +60,13 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json({
       success: true,
-      data: { url, type: subDir },
       message: `${subDir === "videos" ? "동영상이" : "파일이"} 성공적으로 업로드되었습니다.`,
+      data: { url, type: subDir },
+      error: null,
+      meta: { page: 1, total: 1 },
     });
   } catch (error) {
     console.error("Upload Error:", error);
-    return NextResponse.json(
-      { success: false, error: "파일 업로드 중 오류가 발생했습니다." },
-      { status: 500 },
-    );
+    return createApiResponse(null, "파일 업로드 중 오류가 발생했습니다.", 500);
   }
 }
